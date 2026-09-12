@@ -25,7 +25,7 @@
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
    CODEX CÍVICO — estilos
@@ -96,7 +96,7 @@ body{
   position:absolute;left:50%;top:32%;width:76vw;max-width:900px;height:56vh;
   transform:translate(-50%,-50%);
   background:radial-gradient(50% 50% at 50% 50%, rgba(255,214,150,.16), transparent 70%);
-  filter:blur(6px);pointer-events:none;z-index:1;
+  pointer-events:none;z-index:1;
 }
 /* partículas de polvo */
 .polvo{position:absolute;border-radius:50%;background:rgba(255,224,164,.5);z-index:0;pointer-events:none;animation:flotar linear infinite;}
@@ -120,7 +120,6 @@ body{
   border:1px solid rgba(201,162,39,.35);
   border-radius:40px;
   padding:8px 10px 8px 20px;
-  backdrop-filter:blur(8px);
 }
 .barra-top .bt-titulo{
   font-family:var(--disp);font-size:clamp(12px,1.8vw,16px);
@@ -141,42 +140,86 @@ body{
 .btn-ico:active{transform:scale(.94);}
 
 /* ---------- El libro ---------- */
-.libro-zona{position:relative;z-index:10;width:100%;display:flex;flex-direction:column;align-items:center;}
+.libro-zona{position:relative;z-index:10;width:100%;display:flex;flex-direction:column;align-items:center;perspective:2600px;}
 .libro{
   position:relative;
   width:min(92vw,520px,54vh);
   aspect-ratio:100/142;
   transform-style:preserve-3d;
-  filter:drop-shadow(0 30px 60px rgba(0,0,0,.65)) drop-shadow(0 4px 14px rgba(0,0,0,.5));
+  box-shadow:0 30px 60px rgba(0,0,0,.55),0 4px 14px rgba(0,0,0,.4);
+}
+/* pila de páginas en el borde derecho (grosor del libro) */
+.libro::before{
+  content:'';position:absolute;top:3px;right:-6px;bottom:3px;width:13px;z-index:1;
+  background:
+    repeating-linear-gradient(0deg, #f8f0dd 0 2px, #e2d5b4 2px 4px),
+    linear-gradient(270deg, rgba(48,38,26,.32), rgba(48,38,26,.05));
+  border-radius:0 7px 7px 0;
+  box-shadow:inset -3px 0 6px rgba(48,38,26,.3);
+}
+/* lomo de cuero (borde izquierdo) */
+.libro::after{
+  content:'';position:absolute;left:-9px;top:2px;bottom:2px;width:11px;z-index:2;
+  background:linear-gradient(90deg, var(--cuero-3) 0%, var(--cuero-1) 55%, rgba(255,255,255,.18) 100%);
+  border-radius:5px 0 0 5px;
+  box-shadow:-2px 0 8px rgba(0,0,0,.4);
 }
 .hoja{
   position:absolute;inset:0;
   transform-style:preserve-3d;
-  transition:transform .95s cubic-bezier(.45,.08,.25,1);
+  transform-origin:left center;
+  transition:transform .85s cubic-bezier(.4,.06,.2,1);
   cursor:pointer;
+  will-change:transform;
 }
 .hoja.sinTrans{transition:none!important;}
+.hoja.volteando-fwd{animation:vueltaFwd .95s cubic-bezier(.46,.03,.26,1) forwards;}
+.hoja.volteando-back{animation:vueltaBack .95s cubic-bezier(.46,.03,.26,1) forwards;}
+@keyframes vueltaFwd{
+  0%{transform:rotateY(0deg) translateZ(0);}
+  42%{transform:rotateY(-82deg) translateZ(36px);}   /* la hoja se levanta */
+  62%{transform:rotateY(-100deg) translateZ(6px);}
+  100%{transform:rotateY(-180deg) translateZ(0);}
+}
+@keyframes vueltaBack{
+  0%{transform:rotateY(-180deg) translateZ(0);}
+  42%{transform:rotateY(-98deg) translateZ(36px);}   /* la hoja se levanta */
+  62%{transform:rotateY(-80deg) translateZ(6px);}
+  100%{transform:rotateY(0deg) translateZ(0);}
+}
+/* destello de luz al cruzar la vertical */
+.hoja .lustre,.hoja .sombra{position:absolute;inset:0;pointer-events:none;z-index:6;transform:translateZ(14px);opacity:0;}
+.hoja .lustre{
+  background:linear-gradient(105deg, transparent 32%, rgba(255,255,255,.62) 46%, rgba(255,220,150,.28) 52%, transparent 64%);
+}
+.hoja .sombra{z-index:5;background:linear-gradient(90deg, rgba(22,13,7,.45), rgba(22,13,7,.08) 55%, transparent);}
+.hoja.volteando-fwd .lustre,.hoja.volteando-back .lustre{animation:lustreG .95s ease forwards;}
+.hoja.volteando-fwd .sombra,.hoja.volteando-back .sombra{animation:sombraG .95s ease forwards;}
+@keyframes lustreG{
+  0%{opacity:0;transform:translateZ(14px) translateX(-130%);}
+  25%{opacity:.95;transform:translateZ(14px) translateX(-25%);}
+  60%{opacity:.9;transform:translateZ(14px) translateX(45%);}
+  100%{opacity:0;transform:translateZ(14px) translateX(140%);}
+}
+@keyframes sombraG{
+  0%{opacity:0;} 35%{opacity:.75;} 70%{opacity:.45;} 100%{opacity:0;}
+}
 .cara{
   position:absolute;inset:0;
   backface-visibility:hidden;
   -webkit-backface-visibility:hidden;
   overflow:hidden;
-  border-radius:4px 10px 10px 4px;
+  border-radius:4px 12px 12px 4px;
 }
-.dorso{transform:rotateY(180deg);border-radius:10px 4px 4px 10px;}
+.dorso{transform:rotateY(180deg);border-radius:12px 4px 4px 12px;}
 /* lomo (borde izquierdo) */
 .frente::before,.dorso::before{
   content:'';position:absolute;top:0;bottom:0;left:0;width:26px;z-index:3;pointer-events:none;
   background:linear-gradient(90deg,rgba(48,38,26,.22),rgba(48,38,26,0));
 }
 .dorso::before{left:auto;right:0;background:linear-gradient(270deg,rgba(48,38,26,.22),rgba(48,38,26,0));}
-/* marca de página (borde derecho apilado) */
-.frente::after{
-  content:'';position:absolute;top:2px;right:-7px;bottom:2px;width:12px;z-index:2;pointer-events:none;
-  background:repeating-linear-gradient(0deg, var(--papel) 0 2px, #e7dcc0 2px 4px);
-  border-radius:0 6px 6px 0;
-  box-shadow:-2px 0 6px rgba(48,38,26,.25);
-}
+/* pliegue junto al lomo: da curva al papel */
+.frente::after{left:0;width:22px;background:linear-gradient(90deg,rgba(48,38,26,.2),rgba(48,38,26,0));}
 /* ---------- Páginas de papel ---------- */
 .frente,.dorso{
   background:
@@ -186,6 +229,7 @@ body{
   color:var(--tinta);
   display:flex;flex-direction:column;
   padding:34px 30px 32px;
+  border-radius:4px 12px 12px 4px;
 }
 /* filigrana en esquinas */
 .esq{position:absolute;width:34px;height:34px;border:1px solid rgba(138,106,22,.55);z-index:4;pointer-events:none;}
@@ -317,7 +361,7 @@ body{
 .cinta span:nth-child(2){background:var(--azul);}
 .cinta span:nth-child(3){background:var(--rojo);}
 /* emblema */
-.emblema{width:clamp(96px,26vw,132px);height:auto;filter:drop-shadow(0 4px 8px rgba(0,0,0,.55));}
+.emblema{width:clamp(96px,26vw,132px);height:auto;}
 .emblema .g{stroke:url(#gradOro);fill:none;}
 .emblema .gi{stroke:url(#gradOroI);fill:none;}
 .emblema .estrella{fill:url(#gradOroI);}
@@ -355,7 +399,6 @@ body{
   position:fixed;inset:0;z-index:40;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
   background:rgba(16,10,7,.55);
-  backdrop-filter:blur(2px);
   opacity:0;pointer-events:none;transition:opacity .5s ease;
   text-align:center;padding:20px;
 }
@@ -376,7 +419,6 @@ body{
 .indice{
   position:fixed;inset:0;z-index:60;
   background:rgba(13,8,5,.88);
-  backdrop-filter:blur(10px);
   opacity:0;pointer-events:none;transition:opacity .35s ease;
   display:flex;flex-direction:column;
 }
@@ -510,7 +552,7 @@ function emblema(){
 }
 
 /* ============================================================
-   CONTENIDO — páginas (1..55)
+   CONTENIDO — páginas (1..M)
    ============================================================ */
 function P(n, inner){
   return '<div class="cabeza"><span>Educación Constitucional</span><span class="ch-g">✦</span><span>Constitución 1991</span></div>'+
@@ -1204,52 +1246,8 @@ PAG[55] = P(55,
  '<p class="q">«Estudiar la Constitución también significa aprender a ejercer la ciudadanía»<span class="f">Conclusión del libro</span></p>');
 
 /* ============================================================
-   PORTADA  y  CUBIERTA
+   VERSO DECORATIVO (dorso de cada hoja de contenido)
    ============================================================ */
-function cubiertaHTML(dorso){
-  var interior = dorso
-    ? '<div class="cub-c">'+
-        '<div class="cub-top"><span>Colofón</span></div>'+
-        '<div>'+emblema()+
-          '<div class="cub-title" style="margin-top:14px;">FIN DE LA OBRA</div>'+
-        '</div>'+
-        '<div class="cub-sub" style="font-style:normal;font-size:.74em;letter-spacing:.06em;line-height:1.7;">Este libro virtual reúne el texto de <i>Educación Constitucional y Ciudadanía Crítica</i>, escrito por María Camila Mira Montoya (Grado 11-6, Instituto Técnico Industrial Pascual Bravo, Medellín, 2026), como parte del estudio de los fundamentos de la Constitución Política de Colombia de 1991.</div>'+
-        '<div style="display:flex;flex-direction:column;align-items:center;gap:8px;">'+
-          '<div class="cinta"><span></span><span></span><span></span></div>'+
-          '<div class="cub-autor"><small>Ley 2381 · Constitución de 1991</small></div>'+
-        '</div>'+
-      '</div>'
-    : '<div class="cub-c">'+
-        '<div class="cub-top"><span>Libro virtual</span><span class="sm">Educación Constitucional · Ciudadanía Crítica</span></div>'+
-        '<div style="display:flex;flex-direction:column;align-items:center;gap:14px;">'+
-          emblema()+
-          '<div class="cub-title">EDUCACIÓN CONSTITUCIONAL<br><small>y</small><br>CIUDADANÍA CRÍTICA</div>'+
-          '<div class="cub-sub">Comprender, participar y transformar Colombia</div>'+
-        '</div>'+
-        '<div style="display:flex;flex-direction:column;align-items:center;gap:8px;">'+
-          '<div class="cinta"><span></span><span></span><span></span></div>'+
-          '<div class="cub-autor">María Camila Mira Montoya<small>Grado 11-6 · I.T.I. Pascual Bravo · Medellín, 2026</small></div>'+
-        '</div>'+
-      '</div>';
-  return '<div class="cubierta"><div class="borde"></div><span class="esq tl"></span><span class="esq tr"></span><span class="esq bl"></span><span class="esq br"></span>'+interior+'</div>';
-}
-
-function portadaHTML(){
-  return '<div class="cabeza"><span>Portada</span><span class="ch-g">✦</span><span>1991</span></div>'+
-    '<div class="cuerpo" style="display:flex;flex-direction:column;align-items:center;text-align:center;justify-content:center;gap:10px;">'+
-      '<div style="font-family:var(--ui);font-size:.6em;letter-spacing:.3em;text-transform:uppercase;color:var(--dorado-osc);">Libro virtual de</div>'+
-      '<div style="font-family:var(--disp);font-size:clamp(1.3rem,3.6vw,1.9rem);line-height:1.25;color:var(--cuero-2);">Educación Constitucional<br>y Ciudadanía Crítica</div>'+
-      '<div class="div" style="width:80%;">❦</div>'+
-      '<div style="font-family:var(--serif);font-style:italic;font-size:.95em;color:var(--esmeralda);">Comprender, participar y transformar Colombia</div>'+
-      '<div class="cinta" style="margin-top:6px;"><span></span><span></span><span></span></div>'+
-      '<div style="margin-top:8px;font-family:var(--ui);font-size:.66em;letter-spacing:.2em;text-transform:uppercase;color:var(--tinta-mut);line-height:2;">Por <b style="color:var(--cuero-2);">María Camila Mira Montoya</b><br>Grado 11-6</div>'+
-      '<div style="font-family:var(--ui);font-size:.6em;letter-spacing:.18em;text-transform:uppercase;color:var(--tinta-mut);">Instituto Técnico Industrial Pascual Bravo<br>Medellín, 2026</div>'+
-      '<div class="q" style="max-width:90%;margin-top:8px;">«La democracia no es una conquista que pueda darse por garantizada para siempre»<span class="f">Conclusión</span></div>'+
-    '</div>'+
-    '<div class="piepg">i</div>';
-}
-
-/* Verso decorativo (dorso de cada hoja de contenido) */
 var CITAS = [
   ['La Constitución es la norma de normas. Toda ley debe respetarla.','Sección 1'],
   ['La soberanía reside exclusivamente en el pueblo.','Art. 3'],
@@ -1294,42 +1292,133 @@ var TOC = [
 ];
 
 /* ============================================================
-   MOTOR DEL LIBRO
+   MOTOR DEL LIBRO — pool de hojas reutilizables
+   Solo se crean (maxHojas) hojas físicas en el DOM; al pasar la
+   página se reescribe el contenido de las caras en vez de crear
+   nuevos nodos. Reduce el peso inicial y el uso de memoria.
    ============================================================ */
 var libroEl = document.getElementById('libro');
-var HOJAS = [];
-function crearHoja(front, back){
+
+function pie(p){
+  var num = p;
+  if (p === 0) num = 'ⅰ';
+  else if (p === 1) num = 'i';
+  return '<div class="piepg">'+num+'</div>';
+}
+
+function htmlCubierta(dorso){
+  var c = dorso
+    ? '<div class="cub-c">'+
+        '<div class="cub-top"><span>Colofón</span></div>'+
+        '<div>'+emblema()+
+          '<div class="cub-title" style="margin-top:14px;">FIN DE LA OBRA</div>'+
+        '</div>'+
+        '<div class="cub-sub" style="font-style:normal;font-size:.74em;letter-spacing:.06em;line-height:1.7;">Este libro virtual reúne el texto de <i>Educación Constitucional y Ciudadanía Crítica</i>, escrito por María Camila Mira Montoya (Grado 11-6, Instituto Técnico Industrial Pascual Bravo, Medellín, 2026), como parte del estudio de los fundamentos de la Constitución Política de Colombia de 1991.</div>'+
+        '<div style="display:flex;flex-direction:column;align-items:center;gap:8px;">'+
+          '<div class="cinta"><span></span><span></span><span></span></div>'+
+          '<div class="cub-autor"><small>Ley 2381 · Constitución de 1991</small></div>'+
+        '</div>'+
+      '</div>'
+    : '<div class="cub-c">'+
+        '<div class="cub-top"><span>Libro virtual</span><span class="sm">Educación Constitucional · Ciudadanía Crítica</span></div>'+
+        '<div style="display:flex;flex-direction:column;align-items:center;gap:14px;">'+
+          emblema()+
+          '<div class="cub-title">EDUCACIÓN CONSTITUCIONAL<br><small>y</small><br>CIUDADANÍA CRÍTICA</div>'+
+          '<div class="cub-sub">Comprender, participar y transformar Colombia</div>'+
+        '</div>'+
+        '<div style="display:flex;flex-direction:column;align-items:center;gap:8px;">'+
+          '<div class="cinta"><span></span><span></span><span></span></div>'+
+          '<div class="cub-autor">María Camila Mira Montoya<small>Grado 11-6 · I.T.I. Pascual Bravo · Medellín, 2026</small></div>'+
+        '</div>'+
+      '</div>';
+  return '<div class="cubierta"><div class="borde"></div>'+c+'</div>';
+}
+
+function htmlPortada(){
+  return '<div class="cabeza"><span>Portada</span><span class="ch-g">✦</span><span>1991</span></div>'+
+    '<div class="cuerpo" style="display:flex;flex-direction:column;align-items:center;text-align:center;justify-content:center;gap:10px;">'+
+      '<div style="font-family:var(--ui);font-size:.6em;letter-spacing:.3em;text-transform:uppercase;color:var(--dorado-osc);">Libro virtual de</div>'+
+      '<div style="font-family:var(--disp);font-size:clamp(1.3rem,3.6vw,1.9rem);line-height:1.25;color:var(--cuero-2);">Educación Constitucional<br>y Ciudadanía Crítica</div>'+
+      '<div class="div" style="width:80%;">❦</div>'+
+      '<div style="font-family:var(--serif);font-style:italic;font-size:.95em;color:var(--esmeralda);">Comprender, participar y transformar Colombia</div>'+
+      '<div class="cinta" style="margin-top:6px;"><span></span><span></span><span></span></div>'+
+      '<div style="margin-top:8px;font-family:var(--ui);font-size:.66em;letter-spacing:.2em;text-transform:uppercase;color:var(--tinta-mut);line-height:2;">Por <b style="color:var(--cuero-2);">María Camila Mira Montoya</b><br>Grado 11-6</div>'+
+      '<div style="font-family:var(--ui);font-size:.6em;letter-spacing:.18em;text-transform:uppercase;color:var(--tinta-mut);">Instituto Técnico Industrial Pascual Bravo<br>Medellín, 2026</div>'+
+      '<div class="q" style="max-width:90%;margin-top:8px;">«La democracia no es una conquista que pueda darse por garantizada para siempre»<span class="f">Conclusión</span></div>'+
+    '</div>'+
+    pie(1);
+}
+
+/** Frente de la hoja lógica idx (0=cubierta, 1=portada, 2..=pág idx-1).
+    PAG[i] ya incluye cabecera + cuerpo + pie. */
+function frenteDe(idx){
+  if (idx === 0) return htmlCubierta(false);
+  if (idx === 1) return htmlPortada();
+  return PAG[idx - 1];   // página de contenido completa (pág 1..55)
+}
+
+/** Dorso de la hoja lógica idx */
+function dorsoDe(idx){
+  if (idx === 0) return versoHTML('II', ['El Estado reconoce y protege la diversidad étnica y cultural de la Nación colombiana.','Art. 7']);
+  if (idx === 1) return versoHTML('iii', ['Este libro se estudia en la escuela: la educación es un derecho y un servicio público con función social.','Art. 67']);
+  if (idx === M + 1) return htmlCubierta(true);   // colofón FIN de la obra
+  return versoHTML(idx, CITAS[(idx - 2) % CITAS.length]);
+}
+
+/* ---- Pool físico ---- */
+var M = 55;                 // páginas de contenido
+var T = M + 2;              // hojas lógicas: cubierta + portada + contenido (57)
+var MAX = 5;                // hojas físicas reutilizables (bajo consumo)
+var pool = [];              // elementos .hoja
+for (var p = 0; p < MAX; p++){
   var h = document.createElement('div');
   h.className = 'hoja';
-  h.innerHTML = '<div class="cara frente">'+front+'</div><div class="cara dorso">'+back+'</div>';
+  h.innerHTML = '<div class="cara frente"></div><div class="cara dorso"></div>'+
+                '<span class="sombra"></span><span class="lustre"></span>';
   libroEl.appendChild(h);
-  HOJAS.push(h);
+  pool.push(h);
 }
-
-var M = 55;                 // páginas de contenido
-var T = M + 2;              // hojas totales: cubierta + portada + contenido (57)
-crearHoja(cubiertaHTML(false), versoHTML('II', ['El Estado reconoce y protege la diversidad étnica y cultural de la Nación colombiana.','Art. 7']));
-crearHoja(portadaHTML(), versoHTML('iii', ['Este libro se estudia en la escuela: la educación es un derecho y un servicio público con función social.','Art. 67']));
-for (var i = 1; i <= M; i++){
-  crearHoja(PAG[i], versoHTML(i + 1, CITAS[(i - 1) % CITAS.length]));
-}
-// contracubierta: frente = última referencia (ya creada), dorso = cubierta final
-// la última hoja ya se creó en el bucle; reemplazamos su dorso por la contracubierta:
-HOJAS[HOJAS.length - 1].querySelector('.dorso').innerHTML = cubiertaHTML(true);
 
 /* ---- Estado ---- */
-var cur = 0;          // hoja en reposo (0..T-1); T = cerrado al final
+var cur = 0;          // hoja en reposo (0..T-1)
 var animando = false;
 var dur = 950;
+var vis = {ini: 0, fin: MAX - 1};   // rango lógico actual en el pool
 
-function layout(){
-  HOJAS.forEach(function(l, idx){
-    if (idx === cur) l.style.zIndex = 400;
-    else if (idx < cur) l.style.zIndex = 300 - (cur - idx);
-    else l.style.zIndex = 350 - (idx - cur);
-  });
+function asignar(pos, frente, dorso){
+  var l = pool[pos];
+  l.querySelector('.frente').innerHTML = frente;
+  l.querySelector('.dorso').innerHTML = dorso;
 }
-layout();
+
+/* actualiza el contenido del pool para cubrir el rango [ini, fin] */
+function rangeVisible(){
+  return {ini: Math.max(0, cur - 2), fin: Math.min(T - 1, cur + 2)};
+}
+function syncPool(){
+  var nv = rangeVisible();
+  if (nv.ini === vis.ini && nv.fin === vis.fin){ layout(); return; }   // sin cambios
+  vis = nv;
+  for (var i = 0; i < MAX; i++){
+    var log = vis.ini + i;
+    if (log <= vis.fin) asignar(i, frenteDe(log), dorsoDe(log));
+    else pool[i].style.display = 'none';
+  }
+  layout();
+}
+function layout(){
+  for (var i = 0; i < MAX; i++){
+    var log = vis.ini + i;
+    var l = pool[i];
+    if (log > vis.fin){ continue; }
+    l.style.display = '';
+    /* la hoja en reposo (cur) arriba; las pasadas muestran su dorso (-180°) */
+    if (log === cur){ l.style.zIndex = 400; l.style.transform = 'rotateY(0deg)'; }
+    else if (log < cur){ l.style.zIndex = 300 - (cur - log); l.style.transform = 'rotateY(-180deg)'; }
+    else { l.style.zIndex = 350 - (log - cur); l.style.transform = 'rotateY(0deg)'; }
+  }
+}
+syncPool();   // primera sincronización
 
 function redibujarUI(){
   var hoja = Math.min(cur + 1, T);
@@ -1338,15 +1427,15 @@ function redibujarUI(){
   var fwd = cur < T - 1, back = cur > 0;
   document.getElementById('btnSig').disabled = !fwd;
   document.getElementById('btnAnt').disabled = !back;
-  /* capas */
   document.getElementById('capaInicio').classList.toggle('visible', cur === 0);
   document.getElementById('capaFin').classList.toggle('visible', cur === T - 1);
 }
-/* estado inicial correcto para cubierta */
 function estadoInicial(){
-  // todas las hojas en rotación 0, cu = 0
-  HOJAS.forEach(function(l){ l.style.transform = 'rotateY(0deg)'; });
-  layout(); redibujarUI();
+  syncPool(); redibujarUI();
+}
+function step(curTo){
+  cur = curTo;
+  syncPool(); redibujarUI();
 }
 
 /* sonido */
@@ -1378,30 +1467,39 @@ function swoosh(atras){
   }
 }
 
+/* hoja física que representa la hoja lógica `log` (o null si no está en el pool) */
+function poolDe(log){
+  var i = log - vis.ini;
+  if (i >= 0 && i < MAX && log <= vis.fin) return pool[i];
+  return null;
+}
+
 function avanzar(){
   if (animando || cur >= T - 1) return;
   animando = true;
-  var l = HOJAS[cur];
+  var l = poolDe(cur);           // la hoja que se voltea
   l.style.zIndex = 500;
-  l.style.transform = 'rotateY(-180deg)';
+  l.classList.remove('volteando-fwd','volteando-back','sinTrans');
+  l.getBoundingClientRect();       // reinicia la animación
+  l.classList.add('volteando-fwd');
   swoosh(false);
   setTimeout(function(){
-    cur++;
-    HOJAS.forEach(function(h){ h.style.transform = 'rotateY(' + (HOJAS.indexOf(h) < cur ? '-180deg' : '0deg') + ')'; });
-    layout(); redibujarUI(); animando = false;
+    l.classList.remove('volteando-fwd');
+    step(cur + 1); animando = false;
   }, dur);
 }
 function retroceder(){
   if (animando || cur <= 0) return;
   animando = true;
-  var l = HOJAS[cur - 1];
+  var l = poolDe(cur - 1);
   l.style.zIndex = 500;
-  l.style.transform = 'rotateY(0deg)';
+  l.classList.remove('volteando-fwd','volteando-back','sinTrans');
+  l.getBoundingClientRect();
+  l.classList.add('volteando-back');
   swoosh(true);
   setTimeout(function(){
-    cur--;
-    HOJAS.forEach(function(h){ h.style.transform = 'rotateY(' + (HOJAS.indexOf(h) < cur ? '-180deg' : '0deg') + ')'; });
-    layout(); redibujarUI(); animando = false;
+    l.classList.remove('volteando-back');
+    step(cur - 1); animando = false;
   }, dur);
 }
 
@@ -1412,11 +1510,9 @@ function saltarA(hojaDest){
   var diff = hojaDest - cur;
   var rapido = Math.abs(diff) > 2;
   if (rapido){
-    HOJAS.forEach(function(l){ l.classList.add('sinTrans'); });
-    HOJAS.forEach(function(h, idx){ h.style.transform = 'rotateY(' + (idx < hojaDest ? '-180deg' : '0deg') + ')'; });
-    cur = hojaDest;
-    HOJAS.forEach(function(l){ l.getBoundingClientRect(); l.classList.remove('sinTrans'); });
-    layout(); redibujarUI();
+    pool.forEach(function(lh){ lh.classList.add('sinTrans'); lh.style.transform = 'rotateY(0deg)'; });
+    step(hojaDest);
+    pool.forEach(function(lh){ lh.getBoundingClientRect(); lh.classList.remove('sinTrans'); });
     if (diff > 0) swoosh(false); else swoosh(true);
   } else if (diff > 0){
     var n = hojaDest - cur;
@@ -1503,18 +1599,17 @@ try{
 }
 estadoInicial();
 if (guardada > 0 && guardada < T){
-  cur = guardada;
-  HOJAS.forEach(function(l){ l.classList.add('sinTrans'); });
-  HOJAS.forEach(function(h, idx){ h.style.transform = 'rotateY(' + (idx < cur ? '-180deg' : '0deg') + ')'; });
-  HOJAS.forEach(function(l){ l.getBoundingClientRect(); l.classList.remove('sinTrans'); });
-  layout(); redibujarUI();
+  pool.forEach(function(lh){ lh.classList.add('sinTrans'); lh.style.transform = 'rotateY(0deg)'; });
+  step(guardada);
+  pool.forEach(function(lh){ lh.getBoundingClientRect(); lh.classList.remove('sinTrans'); });
+  redibujarUI();
 }
 setInterval(function(){
   try{ localStorage.setItem('codex-civico-hoja', String(cur)); }catch(err){ /* sin almacenamiento: no persistir */ }
 }, 700);
 
-/* botones con esquinas decorativas */
-libroEl.querySelectorAll('.hoja').forEach(function(h){
+/* esquinas decorativas en las caras (una sola vez, al crear el pool) */
+pool.forEach(function(h){
   var f = h.querySelector('.frente');
   f.insertAdjacentHTML('beforeend',
     '<span class="esq tl"></span><span class="esq tr"></span><span class="esq bl"></span><span class="esq br"></span>');
