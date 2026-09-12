@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Libro Virtual · Educación Constitucional y Ciudadanía Crítica</title>
+<!--
+  ============================================================
+  LIBRO VIRTUAL — EDUCACIÓN CONSTITUCIONAL Y CIUDADANÍA CRÍTICA
+  Por María Camila Mira Montoya – Grado 11-6
+  Instituto Técnico Industrial Pascual Bravo, Medellín 2026
+
+  CÓMO USARLO EN BLOGGER:
+  1. Entra a "Entradas" o "Páginas" de tu blog.
+  2. Crea una entrada/página y cambia a "Vista HTML".
+  3. Borra el contenido y pega el archivo completo.
+  4. Publica. (El <style> y el <script> funcionan en la vista HTML)
+  ============================================================
+  ESTÉTICA: "CODEX CÍVICO" — libro virtual animado.
+  Cubierta de cuero burdeos con emblema dorado, páginas de
+  papel marfil, tipografías Marcellus + Cormorant Garamond + Jost,
+  giro de hoja en 3D, índice navegable, sonido de página y
+  ambiente de biblioteca nocturna.
+  ============================================================
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   CODEX CÍVICO — estilos
+   ============================================================ */
+:root{
+  --cuero-1:#6e2432;
+  --cuero-2:#431520;
+  --cuero-3:#2a0d14;
+  --dorado:#c9a227;
+  --dorado-2:#e8c15a;
+  --dorado-osc:#8a6a16;
+  --papel:#f8f1df;
+  --papel-2:#fdf8ec;
+  --tinta:#30261a;
+  --tinta-mut:#6b5b42;
+  --esmeralda:#1f5c44;
+  --esmeralda-2:#2f8f66;
+  --crema:#f2e7cb;
+  --amarillo:#fcd116;
+  --azul:#003893;
+  --rojo:#ce1126;
+  --serif:'Cormorant Garamond','Georgia',serif;
+  --disp:'Marcellus','Georgia',serif;
+  --ui:'Jost','Segoe UI',Arial,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;}
+body{
+  font-family:var(--ui);
+  background:
+    radial-gradient(1200px 800px at 50% -10%, rgba(120,70,30,.28), transparent 60%),
+    radial-gradient(900px 620px at 15% 110%, rgba(31,92,68,.22), transparent 55%),
+    radial-gradient(700px 500px at 88% 105%, rgba(110,36,50,.25), transparent 55%),
+    linear-gradient(180deg,#1d1512 0%,#241a15 55%,#191210 100%);
+  color:var(--crema);
+  overflow-x:hidden;
+  min-height:100vh;
+}
+::selection{background:var(--dorado);color:#241a15;}
+
+/* ---------- Escena de biblioteca ---------- */
+.escena{
+  position:relative;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  padding:18px 12px 26px;
+  overflow:hidden;
+}
+/* mesa de madera */
+.mesa{
+  position:absolute;left:-5%;right:-5%;bottom:-4%;
+  height:26vh;z-index:0;
+  background:
+    repeating-linear-gradient(0deg, rgba(0,0,0,.18) 0 2px, transparent 2px 6px),
+    linear-gradient(180deg,#4a2f1b 0%,#33200f 60%,#241507 100%);
+  border-radius:50% 50% 0 0;
+  box-shadow:0 -30px 90px rgba(0,0,0,.6) inset;
+}
+.mesa::before{
+  content:'';position:absolute;left:0;right:0;top:0;height:10px;
+  background:linear-gradient(180deg,rgba(255,214,150,.35),transparent);
+}
+/* luz sobre el libro */
+.luz{
+  position:absolute;left:50%;top:32%;width:76vw;max-width:900px;height:56vh;
+  transform:translate(-50%,-50%);
+  background:radial-gradient(50% 50% at 50% 50%, rgba(255,214,150,.16), transparent 70%);
+  filter:blur(6px);pointer-events:none;z-index:1;
+}
+/* partículas de polvo */
+.polvo{position:absolute;border-radius:50%;background:rgba(255,224,164,.5);z-index:0;pointer-events:none;animation:flotar linear infinite;}
+@keyframes flotar{
+  0%{transform:translateY(10vh) translateX(0);opacity:0;}
+  12%{opacity:.7;}
+  85%{opacity:.25;}
+  100%{transform:translateY(-80vh) translateX(30px);opacity:0;}
+}
+/* vinetas */
+.vineta{position:fixed;inset:0;pointer-events:none;z-index:5;
+  background:radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(10,6,4,.55) 100%);}
+
+/* ---------- Barra superior de la aplicación ---------- */
+.barra-top{
+  position:relative;z-index:20;
+  width:min(96vw,860px);
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  margin-bottom:10px;
+  background:rgba(36,22,16,.55);
+  border:1px solid rgba(201,162,39,.35);
+  border-radius:40px;
+  padding:8px 10px 8px 20px;
+  backdrop-filter:blur(8px);
+}
+.barra-top .bt-titulo{
+  font-family:var(--disp);font-size:clamp(12px,1.8vw,16px);
+  letter-spacing:.14em;color:var(--dorado-2);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.barra-top .bt-titulo small{display:block;font-family:var(--ui);letter-spacing:.28em;font-size:.58em;color:rgba(242,231,203,.65);text-transform:uppercase;}
+.bt-botones{display:flex;gap:8px;flex-shrink:0;}
+.btn-ico{
+  width:38px;height:38px;border-radius:50%;
+  border:1px solid rgba(201,162,39,.55);
+  background:linear-gradient(180deg,rgba(201,162,39,.18),rgba(201,162,39,.05));
+  color:var(--dorado-2);cursor:pointer;font-size:17px;
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .2s,background .2s,box-shadow .2s;
+}
+.btn-ico:hover{transform:translateY(-2px);background:rgba(201,162,39,.3);box-shadow:0 6px 18px rgba(201,162,39,.25);}
+.btn-ico:active{transform:scale(.94);}
+
+/* ---------- El libro ---------- */
+.libro-zona{position:relative;z-index:10;width:100%;display:flex;flex-direction:column;align-items:center;}
+.libro{
+  position:relative;
+  width:min(92vw,520px,54vh);
+  aspect-ratio:100/142;
+  transform-style:preserve-3d;
+  filter:drop-shadow(0 30px 60px rgba(0,0,0,.65)) drop-shadow(0 4px 14px rgba(0,0,0,.5));
+}
+.hoja{
+  position:absolute;inset:0;
+  transform-style:preserve-3d;
+  transition:transform .95s cubic-bezier(.45,.08,.25,1);
+  cursor:pointer;
+}
+.hoja.sinTrans{transition:none!important;}
+.cara{
+  position:absolute;inset:0;
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+  overflow:hidden;
+  border-radius:4px 10px 10px 4px;
+}
+.dorso{transform:rotateY(180deg);border-radius:10px 4px 4px 10px;}
+/* lomo (borde izquierdo) */
+.frente::before,.dorso::before{
+  content:'';position:absolute;top:0;bottom:0;left:0;width:26px;z-index:3;pointer-events:none;
+  background:linear-gradient(90deg,rgba(48,38,26,.22),rgba(48,38,26,0));
+}
+.dorso::before{left:auto;right:0;background:linear-gradient(270deg,rgba(48,38,26,.22),rgba(48,38,26,0));}
+/* marca de página (borde derecho apilado) */
+.frente::after{
+  content:'';position:absolute;top:2px;right:-7px;bottom:2px;width:12px;z-index:2;pointer-events:none;
+  background:repeating-linear-gradient(0deg, var(--papel) 0 2px, #e7dcc0 2px 4px);
+  border-radius:0 6px 6px 0;
+  box-shadow:-2px 0 6px rgba(48,38,26,.25);
+}
+/* ---------- Páginas de papel ---------- */
+.frente,.dorso{
+  background:
+    radial-gradient(140% 90% at 80% 0%, rgba(255,255,255,.5), transparent 45%),
+    repeating-linear-gradient(0deg, rgba(120,90,40,.035) 0 2px, transparent 2px 5px),
+    linear-gradient(115deg,var(--papel) 0%,var(--papel-2) 55%,#f4ecd8 100%);
+  color:var(--tinta);
+  display:flex;flex-direction:column;
+  padding:34px 30px 32px;
+}
+/* filigrana en esquinas */
+.esq{position:absolute;width:34px;height:34px;border:1px solid rgba(138,106,22,.55);z-index:4;pointer-events:none;}
+.esq.tl{top:12px;left:12px;border-right:none;border-bottom:none;}
+.esq.tr{top:12px;right:12px;border-left:none;border-bottom:none;}
+.esq.bl{bottom:12px;left:12px;border-right:none;border-top:none;}
+.esq.br{bottom:12px;right:12px;border-left:none;border-top:none;}
+
+/* ---------- Cabecera de página ---------- */
+.cabeza{
+  display:flex;align-items:baseline;justify-content:space-between;gap:6px;
+  font-family:var(--ui);font-size:.62em;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--tinta-mut);
+  border-bottom:1px solid rgba(138,106,22,.4);
+  padding-bottom:7px;margin-bottom:12px;flex-shrink:0;
+}
+.cabeza .ch-g{color:var(--dorado);font-size:1.1em;letter-spacing:0;}
+/* ---------- Cuerpo de página ---------- */
+.cuerpo{flex:1;overflow:auto;position:relative;scrollbar-width:none;-ms-overflow-style:none;}
+.cuerpo::-webkit-scrollbar{display:none;}
+.cuerpo .p{margin:0 0 .72em;text-align:justify;line-height:1.52;font-family:var(--serif);font-size:clamp(.86rem,.95rem,1rem);}
+.cuerpo .p:last-child{margin-bottom:0;}
+.lead{font-family:var(--serif);font-style:italic;font-size:1.02em;color:var(--esmeralda);margin-bottom:.7em;line-height:1.5;text-align:justify;}
+.sans{font-family:var(--ui);font-size:.74em;letter-spacing:.06em;line-height:1.55;color:var(--tinta-mut);}
+.sec{display:flex;align-items:center;gap:10px;margin:0 0 .5em;}
+.sec-n{
+  flex:none;width:30px;height:30px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--disp);font-size:.85em;color:var(--dorado-2);
+  background:radial-gradient(circle at 35% 30%,var(--esmeralda-2),var(--esmeralda));
+  border:1px solid rgba(201,162,39,.6);
+  box-shadow:0 0 0 2px rgba(201,162,39,.18);
+}
+.sec h3{font-family:var(--disp);font-size:clamp(.92rem,1.05vw + .5rem,1.12rem);letter-spacing:.04em;color:var(--cuero-2);line-height:1.2;}
+.sec .raya{flex:1;height:1px;background:linear-gradient(90deg,rgba(138,106,22,.5),transparent);}
+.rot{font-size:.68em;letter-spacing:.25em;text-transform:uppercase;color:var(--dorado-osc);font-family:var(--ui);margin-bottom:.5em;}
+/* artículo pill */
+.ac{
+  display:inline-block;font-family:var(--ui);font-size:.62em;letter-spacing:.14em;
+  color:var(--esmeralda);border:1px solid rgba(31,92,68,.5);border-radius:20px;
+  padding:1px 9px;margin-right:5px;vertical-align:2px;background:rgba(47,143,102,.08);
+}
+.ac.gold{color:var(--dorado-osc);border-color:rgba(138,106,22,.55);background:rgba(201,162,39,.08);}
+/* lista */
+.list{margin:.2em 0 .7em;padding:0;list-style:none;}
+.list li{position:relative;padding-left:20px;margin:.18em 0;font-family:var(--serif);line-height:1.42;text-align:justify;font-size:.95em;}
+.list li::before{content:'✦';position:absolute;left:0;top:.08em;color:var(--dorado);font-size:.75em;}
+.list.small li{font-size:.85em;}
+/* cita destacada */
+.q{
+  margin:.6em 0;padding:.5em 26px;text-align:center;
+  font-family:var(--serif);font-style:italic;font-size:1.05em;line-height:1.45;color:var(--esmeralda);
+  position:relative;
+}
+.q::before{content:'❝';position:absolute;left:2px;top:-6px;font-size:1.6em;color:var(--dorado);}
+.q::after{content:'❞';position:absolute;right:2px;bottom:-14px;font-size:1.6em;color:var(--dorado);}
+.q .f{display:block;font-style:normal;font-family:var(--ui);font-size:.62em;letter-spacing:.22em;text-transform:uppercase;color:var(--tinta-mut);margin-top:.3em;}
+/* separador ornamental */
+.div{
+  text-align:center;color:var(--dorado);margin:.55em 0;font-size:.85em;letter-spacing:.4em;
+  display:flex;align-items:center;gap:.5em;
+}
+.div::before,.div::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(138,106,22,.5));}
+.div::after{background:linear-gradient(90deg,rgba(138,106,22,.5),transparent);}
+/* línea de tiempo */
+.tl{list-style:none;margin:.2em 0 .6em;padding:0;}
+.tl li{display:flex;gap:10px;margin:.22em 0;align-items:baseline;border-bottom:1px dotted rgba(138,106,22,.35);padding-bottom:.22em;}
+.tl .a{flex:none;font-family:var(--disp);color:var(--dorado-osc);font-size:.95em;min-width:52px;letter-spacing:.03em;}
+.tl .b{font-family:var(--serif);font-size:.9em;line-height:1.4;text-align:justify;}
+/* números destacados */
+.stats{display:flex;justify-content:space-around;margin:.7em 0;gap:6px;}
+.stat{text-align:center;flex:1;}
+.stat .n{font-family:var(--disp);font-size:1.35em;color:var(--cuero-2);display:block;line-height:1.1;}
+.stat .n em{font-style:normal;color:var(--dorado);}
+.stat .l{font-family:var(--ui);font-size:.56em;letter-spacing:.12em;text-transform:uppercase;color:var(--tinta-mut);}
+/* pro / contra */
+.pc{gap:8px;display:grid;grid-template-columns:1fr 1fr;margin:.5em 0;}
+.pc > div{border:1px solid rgba(138,106,22,.4);border-radius:8px;padding:8px 10px;background:rgba(248,241,223,.5);}
+.pc h4{font-family:var(--ui);font-size:.62em;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.4em;}
+.pc.pro h4{color:var(--esmeralda);}
+.pc.contra h4{color:var(--cuero-1);}
+.pc p{font-family:var(--serif);font-size:.8em;line-height:1.4;text-align:justify;}
+/* referencias */
+.ref{font-family:var(--serif);font-size:.72em;line-height:1.35;color:var(--tinta);text-align:justify;}
+.ref p{margin:0 0 .5em;}
+.ref p::before{content:'◆';color:var(--dorado);font-size:.6em;margin-right:6px;}
+/* número de página inferior */
+.piepg{
+  position:absolute;left:0;right:0;bottom:14px;text-align:center;
+  font-family:var(--ui);font-size:.62em;letter-spacing:.18em;color:var(--dorado-osc);
+  display:flex;align-items:center;justify-content:center;gap:10px;flex-shrink:0;
+}
+.piepg::before,.piepg::after{content:'—';color:rgba(138,106,22,.6);}
+/* ---------- Cubierta de cuero ---------- */
+.cubierta{
+  position:absolute;inset:0;border-radius:inherit;
+  background:
+    radial-gradient(120% 100% at 25% 0%, rgba(255,255,255,.12), transparent 40%),
+    radial-gradient(140% 110% at 80% 100%, rgba(0,0,0,.4), transparent 55%),
+    repeating-linear-gradient(0deg, rgba(0,0,0,.12) 0 3px, transparent 3px 8px),
+    linear-gradient(150deg,var(--cuero-1) 0%,var(--cuero-2) 55%,var(--cuero-3) 100%);
+  color:var(--crema);
+  padding:20px;
+}
+.cubierta .borde{
+  position:absolute;inset:12px;
+  border:1px solid rgba(232,193,90,.55);
+  outline:1px solid rgba(232,193,90,.3);
+  outline-offset:5px;
+  pointer-events:none;
+}
+.cub-c{
+  position:relative;z-index:2;height:100%;
+  display:flex;flex-direction:column;align-items:center;justify-content:space-between;
+  text-align:center;padding:8px 6px;
+}
+.cub-top{font-family:var(--ui);font-size:.62em;letter-spacing:.32em;text-transform:uppercase;color:var(--dorado-2);line-height:1.8;}
+.cub-top span{display:block;}
+.cub-top .sm{font-size:.8em;letter-spacing:.2em;color:rgba(242,231,203,.75);}
+.cub-title{font-family:var(--disp);font-size:clamp(1.28rem,4.2vw,1.9rem);line-height:1.25;color:var(--dorado-2);text-shadow:0 2px 12px rgba(0,0,0,.5);letter-spacing:.03em;}
+.cub-title small{display:block;font-size:.52em;letter-spacing:.3em;text-transform:uppercase;color:var(--crema);margin-top:.6em;}
+.cub-sub{font-family:var(--serif);font-style:italic;font-size:clamp(.78rem,2.2vw,1rem);color:rgba(242,231,203,.92);}
+.cub-autor{font-family:var(--ui);font-size:.7em;letter-spacing:.2em;text-transform:uppercase;color:var(--dorado-2);line-height:1.9;}
+.cub-autor small{display:block;color:rgba(242,231,203,.8);font-size:.85em;letter-spacing:.16em;}
+/* cinta tricolor */
+.cinta{display:flex;width:min(76%,220px);height:11px;border-radius:3px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.5);}
+.cinta span{flex:1;}
+.cinta span:nth-child(1){background:var(--amarillo);}
+.cinta span:nth-child(2){background:var(--azul);}
+.cinta span:nth-child(3){background:var(--rojo);}
+/* emblema */
+.emblema{width:clamp(96px,26vw,132px);height:auto;filter:drop-shadow(0 4px 8px rgba(0,0,0,.55));}
+.emblema .g{stroke:url(#gradOro);fill:none;}
+.emblema .gi{stroke:url(#gradOroI);fill:none;}
+.emblema .estrella{fill:url(#gradOroI);}
+.emblema text{font-family:var(--disp);fill:#e8c15a;font-size:26px;}
+/* ---------- Verso decorativo ---------- */
+.verso-in{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 18px;}
+.verso-in .v-glifo{font-size:1.5em;color:var(--dorado);margin-bottom:10px;}
+.verso-in .v-cita{font-family:var(--serif);font-style:italic;font-size:clamp(.95rem,1.1rem,1.2rem);line-height:1.55;color:var(--esmeralda);max-width:90%;}
+.verso-in .v-fuente{font-family:var(--ui);font-size:.62em;letter-spacing:.24em;text-transform:uppercase;color:var(--tinta-mut);margin-top:14px;}
+.verso-in .v-n{position:absolute;bottom:20px;font-family:var(--ui);font-size:.62em;letter-spacing:.2em;color:var(--dorado-osc);}
+/* ---------- Controles de hoja ---------- */
+.controles{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:16px;position:relative;z-index:15;}
+.flecha{
+  width:52px;height:52px;border-radius:50%;
+  border:1px solid rgba(201,162,39,.6);
+  background:linear-gradient(180deg,rgba(201,162,39,.22),rgba(201,162,39,.06));
+  color:var(--dorado-2);font-size:22px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .2s,box-shadow .2s,background .2s;
+  box-shadow:0 8px 22px rgba(0,0,0,.4);
+}
+.flecha:hover{transform:translateY(-3px) scale(1.05);background:rgba(201,162,39,.34);box-shadow:0 4px 14px rgba(201,162,39,.35),0 12px 26px rgba(0,0,0,.5);}
+.flecha:active{transform:scale(.92);}
+.flecha:disabled{opacity:.35;cursor:default;transform:none;box-shadow:none;}
+.controles .info{
+  font-family:var(--ui);font-size:.72em;letter-spacing:.18em;text-transform:uppercase;color:var(--crema);
+  display:flex;flex-direction:column;align-items:center;gap:4px;min-width:120px;
+}
+.barra-prog{width:100%;height:3px;background:rgba(242,231,203,.15);border-radius:3px;overflow:hidden;position:relative;}
+.barra-prog i{position:absolute;left:0;top:0;bottom:0;width:0%;background:linear-gradient(90deg,var(--dorado),var(--esmeralda-2));border-radius:3px;transition:width .45s ease;}
+.hint{position:relative;z-index:12;margin-top:10px;font-family:var(--ui);font-size:.62em;letter-spacing:.2em;text-transform:uppercase;color:rgba(242,231,203,.55);text-align:center;}
+
+/* ---------- Capas (portada cerrada / fin) ---------- */
+.capa{
+  position:fixed;inset:0;z-index:40;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
+  background:rgba(16,10,7,.55);
+  backdrop-filter:blur(2px);
+  opacity:0;pointer-events:none;transition:opacity .5s ease;
+  text-align:center;padding:20px;
+}
+.capa.visible{opacity:1;pointer-events:auto;}
+.capa h2{font-family:var(--disp);letter-spacing:.06em;color:var(--dorado-2);font-size:clamp(1.1rem,3vw,1.5rem);}
+.capa p{font-family:var(--serif);font-style:italic;color:var(--crema);max-width:520px;line-height:1.6;}
+.capa .btn{
+  font-family:var(--ui);font-size:.72em;letter-spacing:.22em;text-transform:uppercase;
+  color:#241a15;background:linear-gradient(180deg,var(--dorado-2),var(--dorado));
+  border:none;border-radius:40px;padding:14px 34px;cursor:pointer;
+  box-shadow:0 10px 30px rgba(0,0,0,.45);
+  transition:transform .2s,box-shadow .2s;
+}
+.capa .btn:hover{transform:translateY(-3px);box-shadow:0 6px 18px rgba(201,162,39,.5),0 14px 30px rgba(0,0,0,.5);}
+.capa .btn.secundario{background:transparent;color:var(--dorado-2);border:1px solid rgba(201,162,39,.6);}
+
+/* ---------- Índice ---------- */
+.indice{
+  position:fixed;inset:0;z-index:60;
+  background:rgba(13,8,5,.88);
+  backdrop-filter:blur(10px);
+  opacity:0;pointer-events:none;transition:opacity .35s ease;
+  display:flex;flex-direction:column;
+}
+.indice.visible{opacity:1;pointer-events:auto;}
+.indice-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 22px;border-bottom:1px solid rgba(201,162,39,.3);
+}
+.indice-head h2{font-family:var(--disp);letter-spacing:.18em;text-transform:uppercase;font-size:1rem;color:var(--dorado-2);}
+.indice-grid{
+  flex:1;overflow-y:auto;padding:18px 22px;
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:6px 20px;
+  align-content:start;
+}
+.indice-grid button{
+  font-family:var(--serif);font-size:.92rem;text-align:left;color:var(--crema);
+  background:transparent;border:none;cursor:pointer;padding:7px 10px;border-radius:6px;
+  display:flex;align-items:baseline;gap:10px;
+  border-bottom:1px dotted rgba(242,231,203,.14);
+  transition:background .2s,color .2s,transform .15s;
+}
+.indice-grid button:hover{background:rgba(201,162,39,.14);color:var(--dorado-2);transform:translateX(4px);}
+.indice-grid button .ip{flex:none;font-family:var(--ui);font-size:.68em;color:var(--dorado);letter-spacing:.08em;}
+.indice-foot{padding:12px 22px;border-top:1px solid rgba(201,162,39,.3);}
+.indice-foot small{font-family:var(--ui);font-size:.6em;letter-spacing:.18em;text-transform:uppercase;color:rgba(242,231,203,.5);}
+
+/* ---------- Responsive ---------- */
+@media (max-width:560px){
+  .frente,.dorso{padding:26px 22px 26px 24px;}
+  .cuerpo .p{font-size:.88rem;}
+  .controles .info{min-width:100px;}
+}
+@media (max-width:380px){
+  .barra-top .bt-titulo small{display:none;}
+}
+</style>
+</head>
+<body>
+
+<div class="escena">
+  <div class="mesa"></div>
+  <div class="luz"></div>
+  <div class="polvo" style="left:12%;top:60%;width:3px;height:3px;animation-duration:26s;animation-delay:0s;"></div>
+  <div class="polvo" style="left:28%;top:70%;width:2px;height:2px;animation-duration:32s;animation-delay:4s;"></div>
+  <div class="polvo" style="left:47%;top:55%;width:3px;height:3px;animation-duration:24s;animation-delay:9s;"></div>
+  <div class="polvo" style="left:63%;top:66%;width:2px;height:2px;animation-duration:30s;animation-delay:2s;"></div>
+  <div class="polvo" style="left:78%;top:72%;width:3px;height:3px;animation-duration:28s;animation-delay:7s;"></div>
+  <div class="polvo" style="left:88%;top:58%;width:2px;height:2px;animation-duration:34s;animation-delay:12s;"></div>
+
+  <div class="barra-top">
+    <div class="bt-titulo">CODEX CÍVICO<small>Educación Constitucional · 1991</small></div>
+    <div class="bt-botones">
+      <button class="btn-ico" id="btnSonido" title="Sonido de página">🔊</button>
+      <button class="btn-ico" id="btnIndice" title="Índice del libro">☰</button>
+    </div>
+  </div>
+
+  <div class="libro-zona">
+    <div class="libro" id="libro"></div>
+    <div class="controles">
+      <button class="flecha" id="btnAnt" title="Hoja anterior">‹</button>
+      <div class="info">
+        <span id="infoHoja">Hoja 1 / —</span>
+        <div class="barra-prog"><i id="barraProg"></i></div>
+      </div>
+      <button class="flecha" id="btnSig" title="Hoja siguiente">›</button>
+    </div>
+  </div>
+  <p class="hint">← → para pasar hojas · desliza el dedo · abre el ☰ índice para saltar</p>
+</div>
+
+<div class="vineta"></div>
+
+<!-- Capa: libro cerrado al inicio -->
+<div class="capa visible" id="capaInicio">
+  <h2>Codex Cívico</h2>
+  <p>Educación Constitucional y Ciudadanía Crítica: comprender, participar y transformar Colombia. Un libro virtual para leer la Constitución de 1991 página a página.</p>
+  <button class="btn" id="btnAbrir">Abrir el libro</button>
+</div>
+
+<!-- Capa: final -->
+<div class="capa" id="capaFin">
+  <h2>Has llegado al final</h2>
+  <p>«La democracia no es una conquista que pueda darse por garantizada para siempre. Es un proceso que necesita participación, vigilancia, conocimiento y responsabilidad.»</p>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
+    <button class="btn" id="btnReleer">Leer de nuevo</button>
+    <button class="btn secundario" id="btnPortada">Volver a la portada</button>
+  </div>
+</div>
+
+<!-- Índice -->
+<div class="indice" id="indice">
+  <div class="indice-head">
+    <h2>Índice del libro</h2>
+    <button class="btn-ico" id="btnCerrarIndice" title="Cerrar">✕</button>
+  </div>
+  <div class="indice-grid" id="indiceGrid"></div>
+  <div class="indice-foot"><small>Toca una entrada para saltar a esa página · 55 páginas</small></div>
+</div>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <linearGradient id="gradOro" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f4e2a1"/>
+      <stop offset=".55" stop-color="#c9a227"/>
+      <stop offset="1" stop-color="#8a6a16"/>
+    </linearGradient>
+    <linearGradient id="gradOroI" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#8a6a16"/>
+      <stop offset=".5" stop-color="#d9b64c"/>
+      <stop offset="1" stop-color="#f4e2a1"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<script>
+(function(){
+'use strict';
+
+/* ============================================================
+   EMBLEMA
+   ============================================================ */
+function emblema(){
+  return '<svg class="emblema" viewBox="0 0 120 120" aria-hidden="true">'+
+    '<circle class="g" cx="60" cy="60" r="57" stroke-width="2"/>'+
+    '<circle class="gi" cx="60" cy="60" r="48" stroke-width="1" stroke-dasharray="3 4"/>'+
+    '<path class="estrella" d="M60 20 L68 45 L95 41 L74 60 L88 86 L60 70 L32 86 L46 60 L25 41 L52 45 Z"/>'+
+    '<text x="60" y="67" text-anchor="middle" style="font-family:var(--disp);font-size:27px;fill:#e8c15a;">1991</text>'+
+    '<circle class="gi" cx="60" cy="60" r="15" stroke-width=".8"/>'+
+    '</svg>';
+}
+
+/* ============================================================
+   CONTENIDO — páginas (1..55)
+   ============================================================ */
+function P(n, inner){
+  return '<div class="cabeza"><span>Educación Constitucional</span><span class="ch-g">✦</span><span>Constitución 1991</span></div>'+
+         '<div class="cuerpo">'+inner+'</div>'+
+         '<div class="piepg">'+n+'</div>';
+}
+
+var PAG = [];
+PAG[1] = P(1,
+ '<p class="p lead" style="font-size:1.5em;line-height:1.1;color:var(--dorado-osc);font-family:var(--disp);">Introducción</p>'+
+ '<p class="p" style="text-indent:1.4em;"><span style="float:left;font-family:var(--disp);font-size:2.6em;line-height:.85;padding:2px 8px 0 0;color:var(--esmeralda);">H</span>ablar de la Constitución Política de Colombia no significa únicamente estudiar una serie de artículos, fechas y normas. La Constitución está presente en muchos aspectos de nuestra vida cotidiana: en nuestros derechos, en la educación, en la manera como elegimos a nuestros gobernantes, en las reglas que organizan al Estado, en la solución de conflictos y en las posibilidades que tenemos como ciudadanos para participar en las decisiones públicas.</p>'+
+ '<p class="p">La Constitución Política de 1991 representó una transformación importante para Colombia. Su creación estuvo relacionada con una época marcada por la violencia, el narcotráfico, el conflicto armado, la corrupción y la exclusión política. Frente a esa realidad, diferentes sectores de la sociedad consideraron necesario construir un nuevo pacto político que ampliara los derechos, fortaleciera la democracia y permitiera una mayor participación ciudadana.</p>'+
+ '<div class="div">❦</div>'+
+ '<p class="q">«Toda persona es libre de conocer, actualizar y rectificar la información que se haya recogido sobre ella»<span class="f">Art. 15 · Habeas data</span></p>'+
+ '<p class="q">«La paz es un derecho y un deber de obligatorio cumplimiento»<span class="f">Art. 22</span></p>');
+
+PAG[2] = P(2,
+ '<div class="rot">Introducción · 2</div>'+
+ '<p class="p">Sin embargo, tener una Constitución garantista no significa que todos sus principios se cumplan automáticamente. Colombia continúa enfrentando problemas relacionados con la desigualdad, la corrupción, la violencia, la crisis ambiental y la protección de comunidades vulnerables.</p>'+
+ '<p class="p">Por eso, comprender la Constitución también implica analizar críticamente la distancia que existe entre lo que las normas prometen y lo que ocurre realmente en la sociedad.</p>'+
+ '<p class="p">Este recorrido permite conocer los fundamentos de la Constitución, la organización del Estado, los mecanismos de participación, su aplicación en la vida cotidiana y los principales debates contemporáneos sobre su futuro.</p>'+
+ '<div class="div">❦</div>'+
+ '<div class="stats">'+
+   '<div class="stat"><span class="n">1991</span><span class="l">Nueva Constitución</span></div>'+
+   '<div class="stat"><span class="n">7.ª</span><span class="l">Papeleta</span></div>'+
+   '<div class="stat"><span class="n">1886</span><span class="l">Constitución anterior</span></div>'+
+   '<div class="stat"><span class="n">105</span><span class="l">Años vigente</span></div>'+
+ '</div>'+
+ '<p class="sans">La Séptima Papeleta, impulsada por estudiantes universitarios, convocó la Asamblea Nacional Constituyente que dio origen a la Carta de 1991, promulgada el 4 de julio de 1991.</p>');
+
+/* ---- 1. Fundamentos ---- */
+PAG[3] = P(3,
+ '<div class="sec"><span class="sec-n">1</span><h3>Los fundamentos de la Constitución</h3><span class="raya"></span></div>'+
+ '<p class="lead">¿Qué es una Constitución y por qué es importante?</p>'+
+ '<p class="p">La Constitución Política es la norma jurídica suprema que establece cómo se organiza un Estado, quién ejerce el poder, cuáles son los límites de las instituciones públicas y qué derechos y libertades tienen las personas.</p>'+
+ '<p class="p">Se considera la <b>«norma de normas»</b>, porque todas las demás leyes y decisiones estatales deben respetarla. Cuando una norma contradice la Constitución, puede ser declarada inconstitucional por la Corte Constitucional.</p>'+
+ '<p class="p">Su importancia está precisamente en que establece límites al poder. No basta con que existan gobernantes, congresistas, jueces o instituciones; todos ellos deben actuar dentro de unas reglas previamente establecidas y respetar los derechos de los ciudadanos.</p>'+
+ '<p class="q">«La Constitución es una norma de normas. En todo caso de incompatibilidad entre la Constitución y la ley u otra norma jurídica, se aplicarán las disposiciones constitucionales»<span class="f">Art. 4 · Supremacía constitucional</span></p>');
+
+PAG[4] = P(4,
+ '<div class="rot">Los fundamentos · 2</div>'+
+ '<p class="p">En Colombia, la necesidad de crear una nueva Constitución surgió en un contexto de profunda crisis política, social y humanitaria durante la segunda mitad del siglo XX. La violencia del narcotráfico, el conflicto armado, la corrupción institucional y la exclusión de importantes sectores de la sociedad demostraron las dificultades de la Constitución de 1886 para responder a las necesidades del país.</p>'+
+ '<p class="p">En 1990 apareció uno de los movimientos más importantes de este proceso: la <b>Séptima Papeleta</b>, impulsada principalmente por estudiantes universitarios. Este movimiento buscó promover la convocatoria de una Asamblea Nacional Constituyente.</p>'+
+ '<p class="p">El proceso culminó con la Constitución Política de 1991, promulgada el <b>4 de julio de 1991</b>, que introdujo importantes transformaciones en materia de derechos, participación y organización institucional.</p>'+
+ '<div class="div">❦</div>'+
+ '<div class="stats">'+
+   '<div class="stat"><span class="n"><em>4 jul.</em></span><span class="l">1991</span></div>'+
+   '<div class="stat"><span class="n"><em>1886</em></span><span class="l">Carta anterior</span></div>'+
+   '<div class="stat"><span class="n"><em>7.ª</em></span><span class="l">Papeleta estudiantil</span></div>'+
+ '</div>');
+
+/* ---- 2. Historia constitucional ---- */
+PAG[5] = P(5,
+ '<div class="sec"><span class="sec-n">2</span><h3>La historia constitucional de Colombia</h3><span class="raya"></span></div>'+
+ '<p class="lead">La historia constitucional colombiana refleja las tensiones políticas, sociales y económicas vividas desde la Independencia.</p>'+
+ '<ul class="tl">'+
+   '<li><span class="a">1811</span><span class="b">Constitución de Cundinamarca: uno de los primeros ensayos constitucionales de la Nueva Granada.</span></li>'+
+   '<li><span class="a">1821</span><span class="b">Constitución de Cúcuta: primer gran texto de la Gran Colombia, bajo Bolívar y Santander.</span></li>'+
+   '<li><span class="a">1830–43</span><span class="b">Ciclos conflictivos entre tendencias centralistas y federalistas.</span></li>'+
+   '<li><span class="a">1853</span><span class="b">Elementos liberales y ampliación de libertades individuales.</span></li>'+
+   '<li><span class="a">1858</span><span class="b">La Confederación Granadina adopta un modelo federalista.</span></li>'+
+   '<li><span class="a">1863</span><span class="b">Constitución de Rionegro: máxima expresión del federalismo liberal — Estados Unidos de Colombia.</span></li>'+
+ '</ul>');
+
+PAG[6] = P(6,
+ '<div class="rot">Historia constitucional · 2</div>'+
+ '<ul class="tl">'+
+   '<li><span class="a">1886</span><span class="b">Regeneración de Rafael Núñez y Miguel Antonio Caro: modelo centralista, confesional y presidencialista. Vigente unos 105 años.</span></li>'+
+   '<li><span class="a">1936</span><span class="b">Con Alfonso López Pumarejo: derechos sociales y función social de la propiedad.</span></li>'+
+   '<li><span class="a">1957</span><span class="b">Plebiscito del Frente Nacional: acuerdo entre liberales y conservadores para alternar el poder durante dieciséis años.</span></li>'+
+   '<li><span class="a">1990</span><span class="b">Movimiento de la Séptima Papeleta impulsa la Asamblea Constituyente.</span></li>'+
+   '<li><span class="a">1991</span><span class="b">La Asamblea promulga la Constitución Política vigente el 4 de julio.</span></li>'+
+ '</ul>'+
+ '<div class="div">❦</div>'+
+ '<p class="q">La historia constitucional colombiana es la historia de las tensiones entre el poder central y las regiones, entre el orden y la libertad.<span class="f">1821 → 1991</span></p>');
+
+/* ---- 3. Qué cambió con 1991 ---- */
+PAG[7] = P(7,
+ '<div class="sec"><span class="sec-n">3</span><h3>¿Qué cambió con la Constitución de 1991?</h3><span class="raya"></span></div>'+
+ '<p class="p">Uno de los principales cambios fue definir a Colombia como <b>Estado Social de Derecho</b>, con un amplio catálogo de derechos fundamentales, sociales, económicos, culturales y colectivos.</p>'+
+ '<p class="rot" style="margin-top:.2em;">Sus principales innovaciones</p>'+
+ '<ul class="list small">'+
+   '<li>La creación de la <b>acción de tutela</b> para proteger de manera inmediata los derechos fundamentales.</li>'+
+   '<li>La creación de la <b>Corte Constitucional</b>, encargada de la supremacía e integridad de la Carta.</li>'+
+   '<li>El fortalecimiento de la <b>descentralización territorial</b>.</li>'+
+   '<li>El reconocimiento del <b>pluralismo étnico y cultural</b>.</li>'+
+   '<li>La incorporación de <b>mecanismos de participación ciudadana</b>.</li>'+
+   '<li>La <b>autonomía constitucional</b> del Banco de la República.</li>'+
+   '<li>La creación de la <b>Fiscalía General de la Nación</b> dentro de la transformación del sistema penal.</li>'+
+ '</ul>'+
+ '<p class="p">También ha sido modificada por actos legislativos: el 03 de 2002 (sistema penal acusatorio), el 02 de 2004 (reelección presidencial, derogado por el 02 de 2015) y los actos 01 y 02 de 2016–2017 (Acuerdo de Paz con las FARC-EP).</p>');
+
+/* ---- 4. Principios fundamentales ---- */
+PAG[8] = P(8,
+ '<div class="sec"><span class="sec-n">4</span><h3>Los principios fundamentales del Estado</h3><span class="raya"></span></div>'+
+ '<p class="p">Los principios fundamentales se encuentran principalmente en el <b>Título I, artículos 1 al 10</b>. Sirven como base para interpretar todo el ordenamiento jurídico.</p>'+
+ '<p class="p">El artículo 1 establece que Colombia es un <b>Estado Social de Derecho</b>, organizado como República unitaria, descentralizada, democrática, participativa y pluralista, fundada en:</p>'+
+ '<ul class="list small">'+
+   '<li>El respeto por la dignidad humana.</li>'+
+   '<li>El trabajo y la solidaridad.</li>'+
+   '<li>La prevalencia del interés general.</li>'+
+   '<li>La autonomía de las entidades territoriales.</li>'+
+   '<li>La democracia, la participación y el pluralismo.</li>'+
+ '</ul>'+
+ '<p class="p">El artículo 3 establece que la <b>soberanía reside exclusivamente en el pueblo</b>: el poder público proviene de los ciudadanos, que lo ejercen directamente (mecanismos de participación) o mediante representantes elegidos por voto.</p>'+
+ '<p class="q">«La soberanía reside exclusivamente en el pueblo, del cual emana el poder público»<span class="f">Art. 3 · Soberanía popular</span></p>');
+
+/* ---- 5. Derechos fundamentales ---- */
+PAG[9] = P(9,
+ '<div class="sec"><span class="sec-n">5</span><h3>Los derechos fundamentales</h3><span class="raya"></span></div>'+
+ '<p class="p">Son garantías esenciales reconocidas a las personas. Se encuentran principalmente en el <b>Título II, Capítulo 1 (arts. 11 a 44)</b>, tienen protección especial y pueden defenderse mediante la acción de tutela <span class="ac">Art. 86</span>.</p>'+
+ '<p class="lead" style="font-size:.95em;">Derecho a la vida — Art. 11</p>'+
+ '<p class="p" style="margin-bottom:.4em;">La vida es inviolable y nadie puede ser privado de ella.</p>'+
+ '<p class="lead" style="font-size:.95em;">Integridad personal — Art. 12</p>'+
+ '<p class="p" style="margin-bottom:.4em;">Ninguna persona puede ser sometida a torturas ni a tratos o penas crueles, inhumanos o degradantes.</p>'+
+ '<p class="lead" style="font-size:.95em;">Igualdad — Art. 13</p>'+
+ '<p class="p" style="margin-bottom:.4em;">Todas las personas nacen libres e iguales ante la ley; se prohíbe toda forma de discriminación.</p>'+
+ '<p class="lead" style="font-size:.95em;">Intimidad y habeas data — Art. 15</p>'+
+ '<p class="p">Derecho a la intimidad personal y familiar, y a conocer, actualizar y rectificar la información sobre uno mismo en bases de datos.</p>');
+
+PAG[10] = P(10,
+ '<div class="rot">Derechos fundamentales · 2</div>'+
+ '<p class="lead" style="font-size:.95em;">Libre desarrollo de la personalidad — Art. 16</p>'+
+ '<p class="p" style="margin-bottom:.4em;">Toda persona puede desarrollar libremente su personalidad, con el límite de los derechos de los demás.</p>'+
+ '<p class="lead" style="font-size:.95em;">Libertad de expresión — Art. 20</p>'+
+ '<p class="p" style="margin-bottom:.4em;">Se garantiza expresar y difundir pensamientos y opiniones.</p>'+
+ '<p class="lead" style="font-size:.95em;">Debido proceso — Art. 29</p>'+
+ '<p class="p" style="margin-bottom:.4em;">Nadie puede ser juzgado sino según leyes preexistentes, ante juez competente y con las formas propias de cada proceso.</p>'+
+ '<p class="lead" style="font-size:.95em;">Derechos de los niños — Art. 44</p>'+
+ '<p class="p" style="margin-bottom:.4em;">Los derechos de los niños prevalecen sobre los derechos de los demás; la familia, la sociedad y el Estado deben protegerlos.</p>'+
+ '<div class="div">❦</div>'+
+ '<p class="q">«Los derechos de los niños prevalecen sobre los derechos de los demás»<span class="f">Art. 44 · Prevalencia</span></p>'+
+ '<p class="sans">Otros derechos están en los artículos 14, 17, 18, 19, 21 a 28, 30 a 38 y 40 a 43 del Título II.</p>');
+
+/* ---- 6. Acción de tutela ---- */
+PAG[11] = P(11,
+ '<div class="sec"><span class="sec-n">6</span><h3>La acción de tutela: una herramienta para defender derechos</h3><span class="raya"></span></div>'+
+ '<p class="p">La acción de tutela es uno de los mecanismos más importantes creados por la Constitución de 1991. Su finalidad es proteger de manera inmediata los derechos fundamentales cuando son vulnerados o amenazados por una autoridad pública o, en determinadas circunstancias, por particulares.</p>'+
+ '<p class="p">Puede ser presentada por <b>cualquier persona ante un juez, sin necesidad de contar obligatoriamente con un abogado</b>.</p>'+
+ '<ul class="list small">'+
+   '<li>Tiene carácter <b>subsidiario</b>: procede cuando no existe otro mecanismo judicial eficaz.</li>'+
+   '<li>Puede usarse de manera <b>transitoria</b> para evitar un perjuicio grave mientras se resuelve otro proceso.</li>'+
+ '</ul>'+
+ '<p class="p">De esta manera, la tutela convirtió la protección de los derechos en una posibilidad mucho más cercana para los ciudadanos.</p>'+
+ '<div class="stats">'+
+   '<div class="stat"><span class="n"><em>10 días</em></span><span class="l">Para resolver</span></div>'+
+   '<div class="stat"><span class="n"><em>Sin</em></span><span class="l">Abogado</span></div>'+
+   '<div class="stat"><span class="n"><em>Subsidiaria</em></span><span class="l">Naturaleza</span></div>'+
+ '</div>');
+
+/* ---- 7. Organización del Estado ---- */
+PAG[12] = P(12,
+ '<div class="sec"><span class="sec-n">7</span><h3>La organización del Estado colombiano</h3><span class="raya"></span></div>'+
+ '<p class="p">La Constitución establece una división del poder público para evitar que una sola institución concentre todas las funciones del Estado.</p>'+
+ '<p class="p">El <b>artículo 113</b> establece tres ramas principales:</p>'+
+ '<ul class="list">'+
+   '<li><b>Rama Legislativa</b> — elabora las leyes.</li>'+
+   '<li><b>Rama Ejecutiva</b> — gobierna y aplica las leyes.</li>'+
+   '<li><b>Rama Judicial</b> — administra justicia.</li>'+
+ '</ul>'+
+ '<p class="p">Esta separación busca establecer <b>controles y contrapesos</b>: si una misma autoridad pudiera crear las leyes, ejecutarlas y juzgar a quienes las incumplen, existiría un alto riesgo de abuso de poder.</p>'+
+ '<div class="div">❦</div>'+
+ '<p class="q">«Además de los órganos que las integran existen otros, autónomos e independientes, para el cumplimiento de las demás funciones del Estado»<span class="f">Art. 113 · Ramas del poder público</span></p>'+
+ '<p class="sans">Existen también los órganos de control (Contraloría, Procuraduría) y la organización electoral (Registraduría y Consejo Nacional Electoral).</p>');
+
+/* ---- 8. Rama Legislativa ---- */
+PAG[13] = P(13,
+ '<div class="sec"><span class="sec-n">8</span><h3>La Rama Legislativa: el Congreso</h3><span class="raya"></span></div>'+
+ '<p class="p">El Congreso de la República es la institución encargada principalmente de elaborar las leyes. Está compuesto por dos cámaras:</p>'+
+ '<ul class="list">'+
+   '<li><b>Senado de la República.</b></li>'+
+   '<li><b>Cámara de Representantes.</b></li>'+
+ '</ul>'+
+ '<p class="p">Entre sus funciones:</p>'+
+ '<ul class="list small">'+
+   '<li>Crear, modificar y derogar leyes.</li>'+
+   '<li>Reformar la Constitución mediante actos legislativos.</li>'+
+   '<li>Ejercer control político sobre el Gobierno.</li>'+
+   '<li>Aprobar el presupuesto nacional.</li>'+
+   '<li>Participar en la elección de determinados funcionarios.</li>'+
+ '</ul>'+
+ '<p class="p">La aprobación de una ley requiere <b>diferentes debates en comisiones y plenarias</b>, lo que permite discutir las propuestas antes de convertirlas en normas. El Congreso es un espacio donde distintos sectores políticos, económicos y sociales presentan intereses que pueden entrar en conflicto.</p>');
+
+/* ---- 9. Rama Ejecutiva ---- */
+PAG[14] = P(14,
+ '<div class="sec"><span class="sec-n">9</span><h3>La Rama Ejecutiva</h3><span class="raya"></span></div>'+
+ '<p class="p">Tiene como función principal <b>gobernar y aplicar las leyes</b>. Está encabezada por el Presidente de la República, quien es simultáneamente:</p>'+
+ '<ul class="list">'+
+   '<li>Jefe de Estado.</li>'+
+   '<li>Jefe de Gobierno.</li>'+
+   '<li>Suprema autoridad administrativa.</li>'+
+ '</ul>'+
+ '<p class="p">El Presidente es elegido por voto popular por un período de <b>cuatro años y no puede ser reelegido</b>.</p>'+
+ '<p class="p">La Rama Ejecutiva también incluye a los ministros, gobernadores y alcaldes, quienes desarrollan funciones de administración y ejecución de políticas públicas.</p>'+
+ '<p class="p">Entre sus responsabilidades están dirigir las relaciones internacionales, mantener el orden público, ejecutar el presupuesto aprobado por el Congreso y garantizar la protección de los derechos de los ciudadanos.</p>'+
+ '<div class="div">❦</div>'+
+ '<p class="q">«El presidente de la República simboliza la unidad nacional»<span class="f">Mandato constitucional</span></p>');
+
+/* ---- 10. Rama Judicial ---- */
+PAG[15] = P(15,
+ '<div class="sec"><span class="sec-n">10</span><h3>La Rama Judicial</h3><span class="raya"></span></div>'+
+ '<p class="p">Administra justicia y resuelve conflictos entre ciudadanos y entre ciudadanos y el Estado. Una característica fundamental es su <b>independencia</b>: los jueces deciden sin recibir órdenes del Gobierno o del Congreso.</p>'+
+ '<p class="lead" style="font-size:.95em;">Corte Constitucional</p>'+
+ '<p class="p" style="margin-bottom:.4em;">Protege la Constitución y revisa, entre otros asuntos, determinadas acciones de tutela.</p>'+
+ '<p class="lead" style="font-size:.95em;">Corte Suprema de Justicia</p>'+
+ '<p class="p" style="margin-bottom:.4em;">Máximo tribunal de la jurisdicción ordinaria.</p>'+
+ '<p class="lead" style="font-size:.95em;">Consejo de Estado</p>'+
+ '<p class="p" style="margin-bottom:.4em;">Conoce de asuntos de la jurisdicción contencioso-administrativa (ciudadanos vs. Estado).</p>'+
+ '<p class="lead" style="font-size:.95em;">Consejo Superior de la Judicatura</p>'+
+ '<p class="p">Funciones de administración y disciplina de la Rama Judicial.</p>'+
+ '<p class="p">La separación de poderes permite controles entre instituciones: una ley puede ser declarada inconstitucional y una actuación ilegal del Gobierno puede ser controlada judicialmente.</p>');
+
+/* ---- 11. Órganos de control ---- */
+PAG[16] = P(16,
+ '<div class="sec"><span class="sec-n">11</span><h3>Los órganos de control</h3><span class="raya"></span></div>'+
+ '<p class="p">Además de las tres ramas del poder existen órganos destinados a vigilar el funcionamiento del Estado.</p>'+
+ '<p class="lead" style="font-size:.95em;">Contraloría General de la República</p>'+
+ '<p class="p" style="margin-bottom:.4em;">Vigila el manejo de los recursos públicos y puede establecer responsabilidad fiscal ante manejos irregulares del dinero del Estado.</p>'+
+ '<p class="lead" style="font-size:.95em;">Procuraduría General de la Nación</p>'+
+ '<p class="p" style="margin-bottom:.4em;">Vigila disciplinariamente a los servidores públicos: multas, suspensiones, destituciones e inhabilidades.</p>'+
+ '<p class="lead" style="font-size:.95em;">Defensoría del Pueblo</p>'+
+ '<p class="p" style="margin-bottom:.4em;">Promueve y protege los derechos humanos: orienta, informa, denuncia y acompaña. No impone condenas.</p>'+
+ '<p class="lead" style="font-size:.95em;">Fiscalía General de la Nación</p>'+
+ '<p class="p">Investiga delitos y acusa; no condena directamente, pues esa función corresponde a los jueces.</p>');
+
+PAG[17] = P(17,
+ '<div class="rot">Órganos de control · 2</div>'+
+ '<p class="p">Estos organismos son <b>complementarios</b>. Por ejemplo, un funcionario corrupto puede enfrentar simultáneamente:</p>'+
+ '<ul class="list small">'+
+   '<li>Una investigación <b>penal</b> de la Fiscalía.</li>'+
+   '<li>Una actuación <b>disciplinaria</b> de la Procuraduría.</li>'+
+   '<li>Una investigación <b>fiscal</b> de la Contraloría.</li>'+
+ '</ul>'+
+ '<p class="p">Sin embargo, la existencia de instituciones de control no garantiza automáticamente resultados rápidos: muchos casos de corrupción pueden tardar años en resolverse o terminar en impunidad.</p>'+
+ '<p class="p">Esto demuestra que las instituciones necesitan también una <b>ciudadanía activa</b> que las vigile y exija resultados.</p>'+
+ '<div class="div">❦</div>'+
+ '<p class="q">La vigilancia del poder no es solo un asunto de instituciones: es también un deber ciudadano.<span class="f">Sección 11</span></p>');
+
+/* ---- 12. Participación ciudadana ---- */
+PAG[18] = P(18,
+ '<div class="sec"><span class="sec-n">12</span><h3>La participación ciudadana</h3><span class="raya"></span></div>'+
+ '<p class="p">Uno de los grandes avances de la Constitución de 1991 fue fortalecer la democracia participativa. El <b>artículo 103</b> establece los mecanismos mediante los cuales los ciudadanos pueden intervenir en las decisiones públicas.</p>'+
+ '<ul class="list small">'+
+   '<li><b>El voto</b> — elegir Presidente, congresistas, gobernadores, alcaldes, diputados y concejales.</li>'+
+   '<li><b>El plebiscito</b> — el pueblo se pronuncia sobre una decisión política del Ejecutivo. Ejemplo: el del 2 de octubre de 2016 sobre el Acuerdo de Paz.</li>'+
+   '<li><b>El referendo</b> — aprobar o rechazar proyectos de ley, actos legislativos o normas.</li>'+
+   '<li><b>La consulta popular</b> — pregunta directa sobre asuntos de trascendencia nacional, departamental o municipal.</li>'+
+ '</ul>');
+
+PAG[19] = P(19,
+ '<div class="rot">Participación ciudadana · 2</div>'+
+ '<ul class="list small">'+
+   '<li><b>El cabildo abierto</b> — reunión pública para discutir asuntos de interés local.</li>'+
+   '<li><b>La iniciativa legislativa popular</b> — los ciudadanos presentan proyectos de ley o de reforma constitucional al Congreso.</li>'+
+   '<li><b>La revocatoria del mandato</b> — retirar de su cargo a un alcalde o gobernador que no cumplió su programa de gobierno, según los requisitos legales.</li>'+
+ '</ul>'+
+ '<p class="p">La participación también comienza en espacios pequeños: en las instituciones educativas, el <b>gobierno escolar</b> permite que estudiantes, padres y demás miembros de la comunidad participen en determinadas decisiones.</p>'+
+ '<p class="p">Por eso, <b>participar en el colegio también puede entenderse como una forma de aprendizaje democrático</b>.</p>'+
+ '<div class="div">❦</div>'+
+ '<p class="q">«Son mecanismos de participación del pueblo en ejercicio de su soberanía: el voto, el plebiscito, el referendo, la consulta popular, el cabildo abierto, la iniciativa legislativa y la revocatoria del mandato»<span class="f">Art. 103</span></p>');
+
+/* ---- 13. Casos ---- */
+PAG[20] = P(20,
+ '<div class="sec"><span class="sec-n">13</span><h3>Separación de poderes: casos reales</h3><span class="raya"></span></div>'+
+ '<p class="lead" style="font-size:.95em;">La reelección presidencial y la yidispolítica</p>'+
+ '<p class="p">Entre 2004 y 2010 se presentó uno de los casos más importantes relacionados con la separación de poderes. En 2004, el Congreso aprobó una reforma constitucional que permitió la <b>reelección presidencial inmediata</b>.</p>'+
+ '<p class="p">Surgieron investigaciones sobre congresistas que habrían recibido beneficios a cambio de apoyar dicha reforma: el escándalo conocido como la <b>yidispolítica</b>. Varios congresistas fueron condenados.</p>'+
+ '<p class="p">El caso demuestra que la separación de poderes puede funcionar como mecanismo de control, pero también evidencia que las instituciones pueden ser vulnerables frente a la corrupción y la influencia política.</p>'+
+ '<p class="p">En 2015, la reelección presidencial inmediata fue eliminada nuevamente mediante reforma constitucional.</p>');
+
+PAG[21] = P(21,
+ '<div class="rot">Casos · 2</div>'+
+ '<p class="lead" style="font-size:.95em;">La Corte Constitucional y el derecho a la salud</p>'+
+ '<p class="p">La <b>Sentencia T-760 de 2008</b>: durante años, numerosos ciudadanos usaron la tutela para exigir medicamentos, tratamientos y servicios de salud. La Corte acumuló cientos de casos y determinó que existían <b>problemas estructurales</b> que afectaban el derecho fundamental a la salud, y ordenó al Gobierno y al Congreso realizar transformaciones.</p>'+
+ '<p class="p">Demuestra que la Rama Judicial puede ejercer controles sobre las demás ramas cuando hay vulneraciones de derechos, sin convertirse por ello en una institución encargada de gobernar o legislar.</p>'+
+ '<p class="lead" style="font-size:.95em;">El conflicto entre el Gobierno y la Corte Suprema (2008–2010)</p>'+
+ '<p class="p">Fuerte tensión alrededor de las investigaciones por la <b>parapolítica</b> y acusaciones de espionaje del DAS contra magistrados.</p>'+
+ '<p class="p">Puso a prueba la independencia judicial: la separación de poderes no depende solo de estar escrita en la Constitución, sino de que los funcionarios respeten las instituciones incluso cuando sus decisiones resultan incómodas.</p>');
+
+/* ---- 14. Reforma pensional ---- */
+PAG[22] = P(22,
+ '<div class="sec"><span class="sec-n">14</span><h3>El debate sobre la reforma pensional de 2024</h3><span class="raya"></span></div>'+
+ '<p class="p">El Congreso es un escenario donde se enfrentan diferentes posiciones políticas y sociales. Un ejemplo fue la reforma pensional de 2024, posteriormente aprobada como <b>Ley 2381 de 2024</b>.</p>'+
+ '<p class="p">La propuesta del Gobierno de Gustavo Petro modificó la estructura del sistema pensional: trabajadores con ingresos de hasta <b>2,3 salarios mínimos</b> cotizarían al sistema público (Colpensiones), mientras quienes superaran ese nivel podrían destinar parte de sus aportes a fondos privados bajo el nuevo esquema.</p>'+
+ '<p class="p">El Gobierno defendió la reforma argumentando que el sistema anterior presentaba problemas de desigualdad y que era necesario ampliar la protección pensional. Los opositores señalaron preocupaciones sobre la <b>sostenibilidad financiera</b> de Colpensiones y el manejo de los ahorros de los trabajadores.</p>'+
+ '<p class="p">El proyecto fue discutido durante meses con expertos, sindicatos, fondos privados y ciudadanos; fue aprobado en junio de 2024 y luego demandado ante la Corte Constitucional.</p>'+
+ '<p class="q">Las reformas pensionales afectan la vida económica de los ciudadanos y el futuro laboral de las nuevas generaciones.<span class="f">Sección 14</span></p>');
+
+/* ---- 15. Cajamarca ---- */
+PAG[23] = P(23,
+ '<div class="sec"><span class="sec-n">15</span><h3>Ciudadanía y democracia: el caso de Cajamarca</h3><span class="raya"></span></div>'+
+ '<p class="p">La democracia no consiste solamente en votar cada cierto número de años. La Constitución de 1991 estableció mecanismos para participar directamente en las decisiones que afectan nuestras vidas.</p>'+
+ '<p class="p">El caso más representativo es la <b>consulta popular minera de Cajamarca, Tolima, en 2017</b>, sobre el proyecto de minería a gran escala La Colosa.</p>'+
+ '<div class="stats">'+
+   '<div class="stat"><span class="n"><em>37 %</em></span><span class="l">Censo participó</span></div>'+
+   '<div class="stat"><span class="n"><em>97,92 %</em></span><span class="l">Dijo NO</span></div>'+
+   '<div class="stat"><span class="n"><em>2017</em></span><span class="l">Consulta popular</span></div>'+
+ '</div>'+
+ '<p class="p">La comunidad demostró que puede usar mecanismos constitucionales para defender su territorio, el agua y su forma de vida. Pero también mostró los límites de la participación: en 2018, la Sentencia <b>SU-095</b> estableció que los municipios no podían prohibir completamente la minería, pues los recursos del subsuelo pertenecen a la Nación.</p>'+
+ '<p class="p">Conclusión: los mecanismos de participación son herramientas poderosas, pero no significan que una decisión ciudadana esté por encima de todo el orden constitucional.</p>');
+
+/* ---- 16. Elecciones ---- */
+PAG[24] = P(24,
+ '<div class="sec"><span class="sec-n">16</span><h3>Elecciones y representación política</h3><span class="raya"></span></div>'+
+ '<p class="p">Las elecciones permiten elegir representantes en los diferentes niveles del Estado:</p>'+
+ '<ul class="list small">'+
+   '<li>Presidente.</li><li>Senadores.</li><li>Representantes a la Cámara.</li>'+
+   '<li>Gobernadores.</li><li>Diputados.</li><li>Alcaldes.</li><li>Concejales.</li>'+
+ '</ul>'+
+ '<p class="p">El sistema electoral colombiano combina la representación proporcional con circunscripciones especiales para garantizar la representación de diferentes comunidades.</p>'+
+ '<p class="lead" style="font-size:.95em;">Representación formal vs. real</p>'+
+ '<p class="p">Aunque legalmente cualquier ciudadano puede aspirar a un cargo de elección popular, en la práctica existen obstáculos:</p>'+
+ '<ul class="list small">'+
+   '<li>El costo de las campañas.</li>'+
+   '<li>Las redes clientelistas.</li>'+
+   '<li>El poder de los partidos tradicionales.</li>'+
+   '<li>Las dificultades de los movimientos independientes para competir en igualdad.</li>'+
+ '</ul>'+
+ '<p class="p">Superar estas barreras es uno de los retos para fortalecer la democracia.</p>');
+
+/* ---- 17. Elecciones 2026 ---- */
+PAG[25] = P(25,
+ '<div class="sec"><span class="sec-n">17</span><h3>Las elecciones de 2026 y la importancia de informarse</h3><span class="raya"></span></div>'+
+ '<p class="p">El seguimiento de las elecciones es fundamental para una ciudadanía responsable. No basta con conocer los nombres de los candidatos; también es necesario revisar:</p>'+
+ '<ul class="list small">'+
+   '<li>Sus propuestas.</li>'+
+   '<li>Sus antecedentes.</li>'+
+   '<li>Quiénes financian sus campañas.</li>'+
+   '<li>Qué intereses representan.</li>'+
+   '<li>Si sus propuestas son realistas.</li>'+
+   '<li>Cómo sus decisiones pueden afectar a la sociedad.</li>'+
+ '</ul>'+
+ '<p class="p">El documento relaciona este proceso con las <b>elecciones legislativas y presidenciales de 2026</b> y señala la importancia de que los jóvenes próximos a votar comiencen a informarse y comparar propuestas.</p>'+
+ '<p class="q">El voto solo tiene verdadero valor democrático cuando se ejerce de manera libre, informada y responsable.<span class="f">Sección 17</span></p>'+
+ '<p class="p">Votar no es simplemente marcar una casilla: es participar en decisiones que afectan el empleo, el salario mínimo, la seguridad industrial y los derechos laborales.</p>');
+
+/* ---- 18. Vida cotidiana ---- */
+PAG[26] = P(26,
+ '<div class="sec"><span class="sec-n">18</span><h3>La Constitución en la vida cotidiana</h3><span class="raya"></span></div>'+
+ '<p class="p">La Constitución no debe quedarse en los libros de derecho o en los tribunales. Uno de los mejores lugares para comprenderla es <b>la escuela</b>.</p>'+
+ '<p class="p">El <span class="ac">Art. 67</span> reconoce la educación como un derecho de la persona y un servicio público con función social: facilita el acceso al conocimiento, la ciencia, la técnica y los bienes culturales, y forma ciudadanos en el respeto de los derechos humanos, la paz, la democracia, el trabajo y la recreación. El Estado, la sociedad y la familia comparten responsabilidades educativas.</p>'+
+ '<p class="p">El <span class="ac">Art. 41</span> establece la obligación de estudiar la Constitución y la instrucción cívica en las instituciones educativas y de fomentar prácticas democráticas.</p>'+
+ '<p class="p">Estas disposiciones constituyen la base de la llamada <b>pedagogía constitucional</b> y de iniciativas como la Cátedra de la Paz.</p>'+
+ '<p class="p">En la comunidad también se aplican los principios constitucionales: los mecanismos de participación y el reconocimiento de la diversidad étnica y cultural permiten que las comunidades intervengan en los asuntos que afectan su territorio y su convivencia.</p>'+
+ '<p class="q">«La educación formará al colombiano en el respeto a los derechos humanos, a la paz y a la democracia»<span class="f">Art. 67</span></p>');
+
+/* ---- 19. Resolución pacífica ---- */
+PAG[27] = P(27,
+ '<div class="sec"><span class="sec-n">19</span><h3>La resolución pacífica de conflictos</h3><span class="raya"></span></div>'+
+ '<p class="p">La Constitución establece que la paz no es solamente un ideal. El <span class="ac">Art. 22</span> afirma que la paz es un derecho y un deber de obligatorio cumplimiento, y el <span class="ac">Art. 95</span> establece como deber ciudadano contribuir a su logro y mantenimiento.</p>'+
+ '<p class="lead" style="font-size:.95em;">Mecanismos constitucionales</p>'+
+ '<ul class="list small">'+
+   '<li><b>Art. 116:</b> los particulares pueden ser investidos transitoriamente de funciones de administración de justicia como conciliadores o árbitros.</li>'+
+   '<li><b>Art. 247:</b> los jueces de paz resuelven conflictos individuales y comunitarios en equidad.</li>'+
+   '<li><b>Acción de tutela:</b> protege derechos fundamentales vulnerados.</li>'+
+ '</ul>'+
+ '<p class="p">Estos mecanismos acercan la justicia a la comunidad y permiten resolver determinados conflictos de una manera más cercana y menos formal.</p>'+
+ '<div class="div">❦</div>'+
+ '<p class="q">«La paz es un derecho y un deber de obligatorio cumplimiento»<span class="f">Art. 22</span></p>');
+
+/* ---- 20. Conflicto escolar ---- */
+PAG[28] = P(28,
+ '<div class="sec"><span class="sec-n">20</span><h3>Un conflicto escolar como ejemplo</h3><span class="raya"></span></div>'+
+ '<p class="p">Imaginemos que dos estudiantes tienen un conflicto porque uno de ellos dañó un objeto personal del otro.</p>'+
+ '<p class="p">En lugar de aplicar inmediatamente una sanción disciplinaria, la institución puede utilizar un <b>comité de mediación estudiantil</b>: este mecanismo permite dialogar, escuchar a las partes y buscar una solución.</p>'+
+ '<p class="p">El caso se relaciona con la obligación de promover la paz y la resolución pacífica de conflictos, así como con la idea de conciliación contemplada constitucionalmente.</p>'+
+ '<div class="div">❦</div>'+
+ '<p class="p">De esta manera, la Constitución deja de ser una teoría y se convierte en una herramienta práctica para resolver problemas.</p>'+
+ '<p class="sans">El gobierno escolar, el manual de convivencia y los comités de mediación son espacios donde la escuela practica la democracia participativa que enseña la Carta de 1991.</p>');
+
+/* ---- 21. Conflicto comunitario ---- */
+PAG[29] = P(29,
+ '<div class="sec"><span class="sec-n">21</span><h3>Un conflicto comunitario: disputa por una zona verde</h3><span class="raya"></span></div>'+
+ '<p class="p">Otro ejemplo puede encontrarse en un barrio donde dos vecinos tienen un conflicto por una zona verde común. Uno ha cercado una parte del espacio para ampliar su jardín; el otro considera que el área pertenece a toda la comunidad y debe conservarse como espacio compartido.</p>'+
+ '<p class="p">La <b>Junta de Acción Comunal</b> decide llevar el caso ante un <b>juez de paz</b> antes de acudir a la justicia ordinaria. Este caso se relaciona con varios artículos constitucionales:</p>'+
+ '<ul class="list small">'+
+   '<li><span class="ac">Art. 22</span> respalda la búsqueda de una solución pacífica.</li>'+
+   '<li><span class="ac">Art. 95-6</span> establece el deber de contribuir al logro y mantenimiento de la paz.</li>'+
+   '<li><span class="ac">Art. 247</span> es la base jurídica de los jueces de paz.</li>'+
+   '<li><span class="ac">Art. 103</span> respalda la participación ciudadana y las organizaciones comunitarias.</li>'+
+ '</ul>');
+
+PAG[30] = P(30,
+ '<div class="rot">Conflicto comunitario · 2</div>'+
+ '<p class="p">El juez de paz permite buscar una solución <b>en equidad</b>, teniendo en cuenta las circunstancias concretas del conflicto y la convivencia de la comunidad.</p>'+
+ '<p class="p">Este mecanismo resulta especialmente adecuado porque:</p>'+
+ '<ul class="list small">'+
+   '<li>Permite preservar las relaciones entre vecinos.</li>'+
+   '<li>Facilita el diálogo.</li>'+
+   '<li>Fortalece el tejido comunitario.</li>'+
+ '</ul>'+
+ '<p class="p">La conclusión principal es que <b>no todos los conflictos necesitan llegar a un proceso judicial formal</b>: existen mecanismos constitucionales pensados para resolver determinadas diferencias de manera más cercana.</p>'+
+ '<div class="div">❦</div>'+
+ '<div class="pc">'+
+   '<div class="pro"><h4>Juez de paz</h4><p>Soluciona en equidad, acerca la justicia y protege la convivencia del barrio.</p></div>'+
+   '<div class="contra"><h4>Justicia ordinaria</h4><p>Último recurso: más formal, larga y costosa para conflictos vecinales cotidianos.</p></div>'+
+ '</div>');
+
+/* ---- 22. Propuestas prevención ---- */
+PAG[31] = P(31,
+ '<div class="sec"><span class="sec-n">22</span><h3>Propuestas para prevenir conflictos comunitarios</h3><span class="raya"></span></div>'+
+ '<p class="p">Para evitar conflictos similares, pueden realizarse <b>jornadas de socialización</b> en las Juntas de Acción Comunal, estableciendo claramente:</p>'+
+ '<ul class="list small">'+
+   '<li>Las reglas sobre el uso de los espacios comunes.</li>'+
+   '<li>Las responsabilidades de los residentes.</li>'+
+   '<li>Los mecanismos disponibles para solucionar desacuerdos.</li>'+
+ '</ul>'+
+ '<p class="p">También sería conveniente <b>enseñar desde la escuela</b> el funcionamiento de mecanismos como la conciliación y los jueces de paz.</p>'+
+ '<p class="p">De esta forma, acudir a estos instrumentos no sería visto como un último recurso, sino como una <b>práctica normal de convivencia democrática</b>.</p>'+
+ '<div class="div">❦</div>'+
+ '<p class="q">La mejor prevención del conflicto es enseñar a resolverlo.<span class="f">Sección 22</span></p>');
+
+/* ---- 23. Problemas actuales ---- */
+PAG[32] = P(32,
+ '<div class="sec"><span class="sec-n">23</span><h3>La Constitución frente a los problemas actuales de Colombia</h3><span class="raya"></span></div>'+
+ '<p class="p">La Constitución de 1991 definió a Colombia como Estado Social de Derecho y estableció la igualdad real y efectiva como uno de los objetivos del Estado. Sin embargo, décadas después continúan existiendo problemas estructurales:</p>'+
+ '<ul class="list">'+
+   '<li>Desigualdad.</li>'+
+   '<li>Corrupción.</li>'+
+   '<li>Crisis ambiental.</li>'+
+   '<li>Violencia.</li>'+
+   '<li>Vulneración de derechos humanos.</li>'+
+   '<li>Protección insuficiente de comunidades vulnerables.</li>'+
+ '</ul>'+
+ '<p class="q">¿Qué tan efectiva puede ser una Constitución si sus garantías no siempre se reflejan en la realidad?<span class="f">Pregunta central de la sección</span></p>'+
+ '<p class="p">El reconocimiento formal de los derechos no garantiza por sí mismo que todas las personas puedan disfrutarlos en igualdad de condiciones.</p>');
+
+/* ---- 24. Desigualdad ---- */
+PAG[33] = P(33,
+ '<div class="sec"><span class="sec-n">24</span><h3>Desigualdad</h3><span class="raya"></span></div>'+
+ '<p class="p">El <span class="ac">Art. 13</span> establece la igualdad ante la ley y ordena al Estado promover condiciones para que la igualdad sea <b>real y efectiva</b>.</p>'+
+ '<p class="p">A pesar de este mandato, Colombia continúa presentando importantes desigualdades sociales y económicas.</p>'+
+ '<p class="p">Las consecuencias del conflicto armado han afectado de manera desproporcionada a <b>campesinos, comunidades indígenas y afrodescendientes</b>.</p>'+
+ '<p class="p">Por eso, la existencia de un derecho escrito no garantiza por sí misma que todas las personas puedan disfrutarlo en igualdad de condiciones.</p>'+
+ '<div class="div">❦</div>'+
+ '<div class="stats">'+
+   '<div class="stat"><span class="n"><em>Derecho</em></span><span class="l">Igualdad formal</span></div>'+
+   '<div class="stat"><span class="n"><em>Real</em></span><span class="l">Igualdad efectiva</span></div>'+
+   '<div class="stat"><span class="n"><em>≠</em></span><span class="l">Cumplimiento</span></div>'+
+ '</div>');
+
+/* ---- 25. Corrupción ---- */
+PAG[34] = P(34,
+ '<div class="sec"><span class="sec-n">25</span><h3>Corrupción</h3><span class="raya"></span></div>'+
+ '<p class="p">La corrupción representa otro de los grandes desafíos institucionales.</p>'+
+ '<p class="p">El documento señala que incluso el presidente Gustavo Petro ha reconocido públicamente la existencia de corrupción dentro de su gobierno, relacionándola, entre otros factores, con herencias de administraciones anteriores.</p>'+
+ '<p class="p">Esto permite observar que la corrupción <b>no pertenece exclusivamente a una ideología o a un gobierno determinado</b>: se trata de un problema institucional que puede aparecer en diferentes sectores y administraciones.</p>'+
+ '<p class="p">La existencia de organismos como la Contraloría, la Procuraduría y la Fiscalía es necesaria, pero no suficiente. También se requiere <b>vigilancia ciudadana y participación activa</b>.</p>'+
+ '<p class="q">Las instituciones de control necesitan una ciudadanía activa que las vigile y exija resultados.<span class="f">Sección 25</span></p>');
+
+/* ---- 26. Crisis ambiental ---- */
+PAG[35] = P(35,
+ '<div class="sec"><span class="sec-n">26</span><h3>Crisis ambiental</h3><span class="raya"></span></div>'+
+ '<p class="p">La Constitución reconoce la protección del medio ambiente:</p>'+
+ '<ul class="list small">'+
+   '<li><span class="ac">Art. 79</span> — derecho a disfrutar de un ambiente sano.</li>'+
+   '<li><span class="ac">Art. 80</span> — planificación del manejo y aprovechamiento de los recursos naturales para garantizar un desarrollo sostenible.</li>'+
+ '</ul>'+
+ '<p class="p">Sin embargo, Colombia continúa enfrentando problemas ambientales importantes.</p>'+
+ '<p class="p">El documento utiliza el caso de <b>La Guajira</b> para mostrar que las crisis ambientales estructurales no necesariamente deben enfrentarse mediante mecanismos excepcionales: la Corte Constitucional ha señalado la necesidad de usar <b>herramientas ordinarias de política pública</b> cuando se trata de problemas estructurales y no de situaciones súbitas e imprevisibles.</p>'+
+ '<p class="q">«Todas las personas tienen derecho a gozar de un ambiente sano»<span class="f">Art. 79</span></p>');
+
+/* ---- 27. Minorías ---- */
+PAG[36] = P(36,
+ '<div class="sec"><span class="sec-n">27</span><h3>Derechos de las minorías y comunidades vulnerables</h3><span class="raya"></span></div>'+
+ '<p class="p">El <span class="ac">Art. 7</span> reconoce la diversidad étnica y cultural de Colombia. No obstante, el reconocimiento constitucional no garantiza automáticamente la protección efectiva.</p>'+
+ '<p class="p">Comunidades rurales, indígenas y afrodescendientes continúan enfrentando riesgos relacionados con la <b>violencia y la falta de protección</b>.</p>'+
+ '<p class="p">El documento menciona cifras de personas <b>confinadas por la violencia</b> y casos de afectación a comunidades vulnerables.</p>'+
+ '<p class="p">Esto evidencia nuevamente la diferencia entre el reconocimiento formal de los derechos y su aplicación efectiva.</p>'+
+ '<div class="div">❦</div>'+
+ '<p class="q">«El Estado reconoce y protege la diversidad étnica y cultural de la Nación colombiana»<span class="f">Art. 7</span></p>');
+
+/* ---- 28. DD.HH. y paz ---- */
+PAG[37] = P(37,
+ '<div class="sec"><span class="sec-n">28</span><h3>Derechos humanos y construcción de paz</h3><span class="raya"></span></div>'+
+ '<p class="p">La implementación del <b>Acuerdo Final de Paz de 2016</b> continúa siendo un desafío.</p>'+
+ '<p class="p">El documento recoge advertencias de <b>Naciones Unidas</b> sobre el riesgo de que Colombia retroceda en materia de derechos humanos si no se fortalece la implementación del acuerdo, y menciona las cifras de asesinatos de <b>líderes sociales y defensores de derechos humanos</b>.</p>'+
+ '<p class="p">Estos hechos muestran que la construcción de paz <b>no termina con la firma de un acuerdo</b>.</p>'+
+ '<p class="p">La paz requiere instituciones eficaces, protección de las comunidades, garantías para quienes defienden derechos y capacidad del Estado para llegar a los territorios.</p>'+
+ '<p class="q">La paz no termina con la firma de un acuerdo: requiere instituciones, protección y presencia del Estado en los territorios.<span class="f">Sección 28</span></p>');
+
+/* ---- 29. Estados de excepción ---- */
+PAG[38] = P(38,
+ '<div class="sec"><span class="sec-n">29</span><h3>Los estados de excepción y las libertades ciudadanas</h3><span class="raya"></span></div>'+
+ '<p class="p">En situaciones extraordinarias, la Constitución permite al Gobierno utilizar mecanismos excepcionales. El documento analiza la declaratoria del <b>estado de conmoción interior en el Catatumbo</b> mediante el <b>Decreto 0062 de 2025</b>, figura relacionada con el <span class="ac">Art. 213</span> y sometida al control de la Corte Constitucional.</p>'+
+ '<p class="p">El uso de estos mecanismos genera una tensión:</p>'+
+ '<div class="pc">'+
+   '<div class="pro"><h4>Por un lado</h4><p>El Estado necesita responder frente a situaciones graves de violencia.</p></div>'+
+   '<div class="contra"><h4>Por otro</h4><p>Las medidas excepcionales pueden afectar libertades ciudadanas.</p></div>'+
+ '</div>'+
+ '<p class="p">Por eso deben existir límites y controles: incluso durante los estados de excepción hay garantías que deben respetarse.</p>'+
+ '<p class="p">El problema aparece cuando mecanismos diseñados para situaciones extraordinarias comienzan a usarse frecuentemente para enfrentar problemas estructurales, debilitando su carácter excepcional.</p>');
+
+/* ---- 30. Nueva Constitución ---- */
+PAG[39] = P(39,
+ '<div class="sec"><span class="sec-n">30</span><h3>¿Colombia necesita una nueva Constitución?</h3><span class="raya"></span></div>'+
+ '<p class="p">Uno de los debates políticos más importantes es la posibilidad de convocar una nueva <b>Asamblea Constituyente</b>.</p>'+
+ '<p class="lead" style="font-size:.95em;">Argumentos a favor</p>'+
+ '<p class="p">El presidente Gustavo Petro ha defendido la Asamblea Constituyente como una forma de impulsar reformas profundas en temas como salud, pensiones, justicia, ordenamiento territorial y transformaciones sociales. Algunos consideran que existen problemas estructurales que no han podido solucionarse adecuadamente mediante las instituciones actuales.</p>'+
+ '<p class="lead" style="font-size:.95em;">Argumentos en contra</p>'+
+ '<p class="p">Sectores de oposición consideran innecesaria una nueva Constitución: la de 1991 continúa siendo una carta moderna y garantista, y sus problemas pueden abordarse mediante reformas específicas. También existe preocupación por el uso de una Asamblea Constituyente con fines políticos o electorales, y el temor de que modifique nuevamente las reglas sobre la reelección presidencial.</p>');
+
+PAG[40] = P(40,
+ '<div class="rot">¿Nueva Constitución? · 2</div>'+
+ '<p class="lead" style="font-size:.95em;">Una posición intermedia</p>'+
+ '<p class="p">Consiste en reconocer que la Constitución puede necesitar modificaciones <b>sin que eso signifique necesariamente reemplazarla por completo</b>.</p>'+
+ '<p class="p">En lugar de plantear una división entre quienes creen que la Constitución no debe tocarse y quienes quieren una nueva Carta completa, podría analizarse qué problemas concretos necesitan reformas y qué mecanismos son más adecuados para realizarlas.</p>'+
+ '<p class="q">La pregunta central no debería ser únicamente si Colombia necesita una nueva Constitución, sino qué problemas se quieren resolver, qué instituciones deben reformarse y qué garantías deben mantenerse protegidas.<span class="f">Sección 30</span></p>'+
+ '<div class="pc">'+
+   '<div class="pro"><h4>Mantener</h4><p>Carta moderna y garantista; reformas puntuales.</p></div>'+
+   '<div class="contra"><h4>Reemplazar</h4><p>Problemas estructurales; transformaciones profundas.</p></div>'+
+ '</div>');
+
+/* ---- 31. Transformación social ---- */
+PAG[41] = P(41,
+ '<div class="sec"><span class="sec-n">31</span><h3>La Constitución como herramienta de transformación social</h3><span class="raya"></span></div>'+
+ '<p class="p">La Constitución de 1991 nació con una <b>promesa transformadora</b>. La Asamblea Nacional Constituyente respondió a una sociedad marcada por exclusión, violencia, poca participación política y debilidad en la protección de los derechos humanos.</p>'+
+ '<p class="p">Por eso, la Constitución incorporó instrumentos destinados a empoderar a los ciudadanos:</p>'+
+ '<ul class="list small">'+
+   '<li>La acción de tutela.</li>'+
+   '<li>La Carta de Derechos Fundamentales.</li>'+
+   '<li>El reconocimiento de la diversidad étnica y cultural.</li>'+
+   '<li>Los mecanismos de participación ciudadana.</li>'+
+ '</ul>'+
+ '<p class="p">Desde esta perspectiva, la Constitución no fue diseñada simplemente como una colección de normas, sino como un <b>proyecto destinado a transformar las relaciones entre los ciudadanos y el Estado</b>.</p>');
+
+/* ---- 32. ¿Ha funcionado? ---- */
+PAG[42] = P(42,
+ '<div class="sec"><span class="sec-n">32</span><h3>¿Ha funcionado la transformación constitucional?</h3><span class="raya"></span></div>'+
+ '<p class="p">Existen <b>logros importantes</b>.</p>'+
+ '<p class="p">La acción de tutela, por ejemplo, permitió que muchas personas pudieran acceder de manera directa y rápida a la protección de sus derechos fundamentales, y cambió la cultura jurídica colombiana porque aumentó el conocimiento ciudadano sobre los derechos y las herramientas para exigirlos.</p>'+
+ '<p class="p">Sin embargo, la transformación ha sido <b>desigual</b>: existe una diferencia entre los derechos reconocidos formalmente y las condiciones materiales que permiten ejercerlos.</p>'+
+ '<p class="p">Una Constitución puede establecer igualdad, paz, educación, salud y protección ambiental, pero <b>no puede garantizar por sí sola</b> que esas condiciones existan automáticamente. Para eso se necesitan instituciones eficaces, recursos, políticas públicas y voluntad política.</p>'+
+ '<div class="div">❦</div>'+
+ '<div class="pc">'+
+   '<div class="pro"><h4>Logros</h4><p>Tutela, cultura jurídica, participación y pluralismo.</p></div>'+
+   '<div class="contra"><h4>Deudas</h4><p>Desigualdad, violencia, protección efectiva de derechos.</p></div>'+
+ '</div>');
+
+/* ---- 33. Brecha ---- */
+PAG[43] = P(43,
+ '<div class="sec"><span class="sec-n">33</span><h3>La brecha entre la Constitución y la realidad</h3><span class="raya"></span></div>'+
+ '<p class="p">Uno de los principales puntos de análisis crítico es la <b>distancia entre la norma y la realidad</b>.</p>'+
+ '<p class="p">La Constitución puede establecer derechos amplios, pero las condiciones económicas, sociales y políticas pueden impedir que determinados ciudadanos disfruten plenamente de ellos.</p>'+
+ '<p class="p">Esto significa que la existencia de una Constitución garantista es <b>necesaria, pero no suficiente</b>.</p>'+
+ '<p class="q">La Constitución establece el marco, pero su eficacia depende también de la capacidad de las instituciones y de la participación de los ciudadanos.<span class="f">Sección 33</span></p>'+
+ '<div class="div">❦</div>'+
+ '<div class="stats">'+
+   '<div class="stat"><span class="n"><em>Norma</em></span><span class="l">Lo prometido</span></div>'+
+   '<div class="stat"><span class="n"><em>Realidad</em></span><span class="l">Lo cumplido</span></div>'+
+   '<div class="stat"><span class="n"><em>Brecha</em></span><span class="l">El reto</span></div>'+
+ '</div>');
+
+/* ---- 34. Obstáculo o límite ---- */
+PAG[44] = P(44,
+ '<div class="sec"><span class="sec-n">34</span><h3>¿La Constitución es un obstáculo o un límite necesario?</h3><span class="raya"></span></div>'+
+ '<p class="p">Existe otro debate relacionado con el conflicto armado.</p>'+
+ '<p class="p">Algunos críticos han considerado que una Carta amplia de derechos puede <b>limitar la capacidad del Estado</b> para enfrentar a actores armados.</p>'+
+ '<p class="p">En el extremo contrario, existen sectores que consideran que cualquier modificación constitucional podría <b>poner en riesgo los avances democráticos</b> logrados desde 1991.</p>'+
+ '<p class="p">Una posición equilibrada reconoce que ninguna de estas posturas extremas explica completamente la realidad:</p>'+
+ '<p class="q">La Constitución no es responsable por sí sola de la violencia del país, pero tampoco puede solucionar por sí sola las causas estructurales del conflicto.<span class="f">Sección 34</span></p>'+
+ '<p class="p">La Constitución abrió espacios importantes de democratización, pero esos espacios necesitan instituciones eficaces y condiciones sociales que permitan aprovecharlos.</p>');
+
+/* ---- 35. Síntesis crítica ---- */
+PAG[45] = P(45,
+ '<div class="sec"><span class="sec-n">35</span><h3>Síntesis crítica: una Constitución que sigue en construcción</h3><span class="raya"></span></div>'+
+ '<p class="p">La visión crítica puede resumirse en <b>tres grandes ideas</b>:</p>'+
+ '<p class="p"><b>Primero</b>, la Constitución de 1991 amplió de manera real los derechos, las libertades y los mecanismos de participación ciudadana frente al modelo de 1886.</p>'+
+ '<p class="p"><b>Segundo</b>, su capacidad para transformar la sociedad ha sido desigual: algunos derechos, como el acceso a la justicia mediante la tutela, han encontrado mecanismos eficaces de protección, mientras que problemas como la desigualdad, la violencia y la protección de comunidades vulnerables continúan.</p>'+
+ '<p class="p"><b>Tercero</b>, la Constitución sigue siendo objeto de debate político: unos la protegen como conquista democrática, otros creen que su diseño institucional dificulta transformaciones más profundas.</p>'+
+ '<p class="q">Esta tensión demuestra que la Constitución de 1991 sigue siendo un documento vivo: un marco que continúa siendo interpretado, discutido y utilizado.<span class="f">Sección 35</span></p>');
+
+/* ---- 36. Qué aprendimos ---- */
+PAG[46] = P(46,
+ '<div class="sec"><span class="sec-n">36</span><h3>¿Qué aprendimos?</h3><span class="raya"></span></div>'+
+ '<p class="p">El estudio de la Constitución permitió avanzar desde sus antecedentes históricos hasta su aplicación en la vida cotidiana:</p>'+
+ '<ul class="list small">'+
+   '<li>Primero se comprendió el <b>origen</b> de la Constitución de 1991 y su ruptura con el modelo de 1886.</li>'+
+   '<li>Después se estudió la <b>separación de poderes</b> y el papel de los órganos de control.</li>'+
+   '<li>Posteriormente se analizaron los <b>mecanismos de participación</b> ciudadana y su aplicación práctica.</li>'+
+   '<li>Se trasladaron estos conceptos a la <b>escuela y la comunidad</b>: derechos, resolución de conflictos y jueces de paz.</li>'+
+   '<li>Finalmente, se analizaron problemas actuales como desigualdad, corrupción, crisis ambiental, violencia y el debate sobre una posible Asamblea Constituyente.</li>'+
+ '</ul>'+
+ '<p class="q">El principal aprendizaje no consiste en memorizar artículos: la Constitución es un marco vivo cuya efectividad depende de que los ciudadanos conozcan sus derechos y de que las instituciones tengan la voluntad y capacidad de hacerlos realidad.<span class="f">Sección 36</span></p>');
+
+/* ---- 37. Propuestas educativas ---- */
+PAG[47] = P(47,
+ '<div class="sec"><span class="sec-n">37</span><h3>Propuestas para mejorar las instituciones educativas</h3><span class="raya"></span></div>'+
+ '<p class="p">A partir de este recorrido pueden plantearse propuestas para el <b>Instituto Técnico Industrial Pascual Bravo</b>:</p>'+
+ '<p class="lead" style="font-size:.95em;">Crear un espacio permanente de formación ciudadana</p>'+
+ '<p class="p">La institución podría establecer un <b>grupo estudiantil de análisis constitucional</b> dedicado a discutir problemas políticos y jurídicos actuales, y a analizar conflictos entre estudiantes desde principios constitucionales.</p>'+
+ '<p class="lead" style="font-size:.95em;">Convertir el manual de convivencia en una herramienta constitucional</p>'+
+ '<p class="p">Revisar el manual de convivencia junto con la comunidad educativa y relacionar sus principales normas con los artículos constitucionales que las respaldan: así, los estudiantes podrían comprender que las normas escolares no son simplemente reglas arbitrarias.</p>');
+
+PAG[48] = P(48,
+ '<div class="rot">Propuestas educativas · 2</div>'+
+ '<p class="lead" style="font-size:.95em;">Enseñar cómo funciona la tutela</p>'+
+ '<p class="p">La comunidad educativa debería conocer, de manera sencilla, qué es una acción de tutela, cuándo puede utilizarse y cuáles son sus características. Esta formación podría dirigirse a <b>estudiantes, docentes, trabajadores y acudientes</b>.</p>'+
+ '<p class="lead" style="font-size:.95em;">Fortalecer el gobierno escolar</p>'+
+ '<p class="p">El gobierno escolar debería tener una participación más significativa en las decisiones de la vida institucional.</p>'+
+ '<p class="q">La democracia no debería enseñarse solamente como teoría, sino practicarse dentro de la escuela.<span class="f">Sección 37</span></p>'+
+ '<div class="div">❦</div>'+
+ '<p class="sans">Estudiar en una institución técnica significa prepararse para el mundo laboral y para tomar decisiones autónomas: la formación técnica no está separada de los asuntos públicos.</p>');
+
+/* ---- 38. Ciudadanía crítica ---- */
+PAG[49] = P(49,
+ '<div class="sec"><span class="sec-n">38</span><h3>Reflexión sobre la ciudadanía crítica</h3><span class="raya"></span></div>'+
+ '<p class="p">Ser ciudadano no significa simplemente haber nacido en un territorio, tener un documento de identidad o alcanzar la mayoría de edad.</p>'+
+ '<p class="p">La <b>ciudadanía crítica</b> implica participar activamente, conocer los propios derechos y cuestionar si las garantías establecidas por la ley realmente llegan a todas las personas.</p>'+
+ '<p class="p">Colombia posee una Constitución amplia en materia de derechos, pero la existencia de esos derechos en el papel no elimina automáticamente problemas como la pobreza, la exclusión o la violencia.</p>'+
+ '<p class="p">Por eso, una persona crítica debe preguntarse constantemente:</p>'+
+ '<ul class="list small">'+
+   '<li>¿Quién puede ejercer realmente un derecho?</li>'+
+   '<li>¿Quién queda excluido?</li>'+
+   '<li>¿Qué instituciones están funcionando?</li>'+
+   '<li>¿Cuáles están fallando?</li>'+
+   '<li>¿Qué se puede cambiar?</li>'+
+ '</ul>'+
+ '<p class="p">La formación técnica en áreas como programación o sistemas no está separada de los asuntos públicos: el conocimiento tecnológico puede abrir nuevas posibilidades para participar en la sociedad y transformar problemas.</p>');
+
+/* ---- 39. Pensamiento crítico digital ---- */
+PAG[50] = P(50,
+ '<div class="sec"><span class="sec-n">39</span><h3>Pensamiento crítico en la era digital</h3><span class="raya"></span></div>'+
+ '<p class="p">La ciudadanía actual también requiere saber manejar la información. Las redes sociales permiten acceder rápidamente a grandes cantidades de contenido, pero eso no significa que todo lo que circula sea verdadero.</p>'+
+ '<p class="p">Aceptar información sin verificarla puede contribuir a la <b>desinformación y a la polarización</b>. Por eso, una ciudadanía crítica debe:</p>'+
+ '<ul class="list small">'+
+   '<li>Revisar la procedencia de la información.</li>'+
+   '<li>Contrastar diferentes fuentes.</li>'+
+   '<li>Diferenciar hechos de opiniones.</li>'+
+   '<li>Evitar compartir información sin verificarla.</li>'+
+   '<li>Reconocer la complejidad de los problemas sociales.</li>'+
+   '<li>Pensar antes de aceptar una afirmación como verdadera.</li>'+
+ '</ul>'+
+ '<p class="q">Pensar críticamente no significa rechazar todas las instituciones: significa mantener una actitud de vigilancia activa.<span class="f">Sección 39</span></p>'+
+ '<p class="p">Reconocer lo que funciona, señalar lo que falla, proponer soluciones y participar en las decisiones que afectan a la comunidad.</p>');
+
+/* ---- Conclusión ---- */
+PAG[51] = P(51,
+ '<div class="sec"><span class="sec-n">✦</span><h3>Conclusión</h3><span class="raya"></span></div>'+
+ '<p class="p">La Constitución Política de Colombia de 1991 representó una transformación profunda en la manera de entender los derechos, la democracia y la relación entre el Estado y los ciudadanos.</p>'+
+ '<p class="p">Su importancia no está únicamente en sus artículos, sino en las <b>herramientas que proporciona</b> para que las personas puedan defender sus derechos, participar en las decisiones públicas y exigir responsabilidad a las instituciones.</p>'+
+ '<p class="p">La separación de poderes busca evitar la concentración del poder. Los órganos de control vigilan el funcionamiento del Estado. La tutela permite defender derechos fundamentales. Los mecanismos de participación hacen posible que los ciudadanos intervengan más allá del voto.</p>'+
+ '<p class="p">Pero también existen límites: la Constitución no puede solucionar automáticamente la desigualdad, la corrupción, la violencia o la crisis ambiental. Para que sus principios se conviertan en realidades se necesita una <b>ciudadanía activa</b> y unas instituciones capaces de cumplir sus responsabilidades.</p>');
+
+PAG[52] = P(52,
+ '<div class="rot">Conclusión · 2</div>'+
+ '<p class="p">Por eso, el verdadero desafío no consiste únicamente en decidir si Colombia debe mantener, reformar o reemplazar su Constitución.</p>'+
+ '<p class="q">El desafío consiste en preguntarnos cómo hacer que los derechos y principios que ya existen sean realmente accesibles para todos.<span class="f">Conclusión</span></p>'+
+ '<p class="p">La ciudadanía crítica empieza cuando dejamos de ver la Constitución como un documento lejano y comenzamos a entenderla como una herramienta presente en nuestra escuela, nuestra comunidad, nuestras elecciones, nuestros conflictos y nuestras decisiones.</p>'+
+ '<p class="q">La democracia no es una conquista que pueda darse por garantizada para siempre: es un proceso que necesita participación, vigilancia, conocimiento y responsabilidad.<span class="f">Conclusión</span></p>'+
+ '<p class="p">En ese sentido, estudiar la Constitución también significa <b>aprender a ejercer la ciudadanía</b>.</p>');
+
+/* ---- Referencias ---- */
+PAG[53] = P(53,
+ '<div class="sec"><span class="sec-n">✦</span><h3>Referencias · I</h3><span class="raya"></span></div>'+
+ '<div class="ref">'+
+   '<p>Amnistía Internacional. (2026). <i>Informe anual 2025/2026: la situación de los derechos humanos en el mundo</i> [Reseña sobre Colombia]. Citado en El Colombiano.</p>'+
+   '<p>Asamblea Nacional Constituyente. (1991). <i>Constitución Política de Colombia</i>. Gaceta Constitucional.</p>'+
+   '<p>Associated Press. (2026, 26 de febrero). <i>Informe ONU: Colombia corre riesgo de retroceder a grave situación de DD. HH. previa al acuerdo de paz.</i></p>'+
+   '<p>Asuntos Legales. (2025, 18 de enero). <i>Gobierno Petro evalúa medidas excepcionales ante crisis de violencia en el Catatumbo</i>. La República.</p>'+
+   '<p>Chica Duque, F. (2024). <i>Las paradojas de la Constitución de 1991 y su reflejo en la narrativa del Informe Final de la Comisión de la Verdad</i>. Universidad del Rosario.</p>'+
+   '<p>Corte Constitucional de Colombia. (1993, 17 de junio). <i>Sentencia C-226 de 1993</i>.</p>'+
+   '<p>Corte Constitucional de Colombia. (2000, 22 de marzo). <i>Sentencia C-328 de 2000</i>.</p>'+
+   '<p>De la Hoz Martínez, M. L., &amp; Granados Pérez, D. A. (2017). La enseñanza de la democracia y la Constitución para la formación de ciudadanías para la paz. <i>Revista Vis Iuris, 4</i>(8), 132–144.</p>'+
+   '<p>Diario Expreso. (2026, 21 de abril). <i>Gustavo Petro confirma plan de Asamblea Constituyente para reformar la política en Colombia.</i></p>'+
+ '</div>');
+
+PAG[54] = P(54,
+ '<div class="rot">Referencias · II</div>'+
+ '<div class="ref">'+
+   '<p>El País Cali. (2025, octubre). <i>2025, entre los peores años en materia humanitaria de la década en Colombia</i>, según Human Rights Watch.</p>'+
+   '<p>Forero Hernández, D. J. (2021). La educación en la Constitución Política de 1991 y algunas realidades. <i>Dos Mil Tres Mil, 23</i>.</p>'+
+   '<p>Fundación para el Estado de Derecho [FEDe. Colombia]. (2025, 3 de marzo). <i>Intervención ciudadana frente al Decreto Legislativo 062 de 2025.</i></p>'+
+   '<p>Gutiérrez Sanín, F. (2011). La Constitución de 1991 como pacto de paz: discutiendo las anomalías. <i>Análisis Político</i>.</p>'+
+   '<p>Ministerio de Vivienda, Ciudad y Territorio. (2026). <i>Resolución por medio de la cual se crea la Mesa Nacional para el programa Barrios de Paz.</i></p>'+
+   '<p>Naciones Unidas, Consejo de Derechos Humanos. (2026, 27 de enero). <i>Informe del Alto Comisionado de las Naciones Unidas para los Derechos Humanos sobre la situación de los derechos humanos en Colombia (A/HRC/61/20).</i></p>'+
+   '<p>Publimetro. (2025, 20 de junio). <i>“No a la papeleta”: oposición reacciona a propuesta de Petro para una Asamblea Constituyente en 2026.</i></p>'+
+   '<p>Rama Judicial de Colombia. (2019). <i>Fundamentos constitucionales de los jueces de paz.</i></p>'+
+   '<p>Universidad Externado de Colombia. (2021). Presentación: 30 años de la Constitución colombiana de 1991. <i>Revista Derecho del Estado, (50)</i>, 5–7.</p>'+
+ '</div>');
+
+PAG[55] = P(55,
+ '<div class="rot">Referencias · III</div>'+
+ '<div class="ref">'+
+   '<p>Uprimny, R. (2025, julio). <i>La Constitución de 1991 y la democracia colombiana</i>. Cambio Colombia.</p>'+
+   '<p>Vanguardia. (2025, 22 de junio). <i>Petro insiste en convocar una asamblea constituyente y dice que participaría “como ciudadano del común”.</i></p>'+
+   '<p>Vanguardia. (2026, 3 de agosto). <i>La violencia contra líderes sociales sigue expandiéndose: afecta a 432 municipios en 2026.</i></p>'+
+   '<p>Velasco Jaramillo, M. (s. f.). <i>Los efectos de la Constitución de 1991 sobre la protesta social en Colombia: un análisis estadístico</i>. Revista Colombiana de Sociología.</p>'+
+ '</div>'+
+ '<div class="div">❦</div>'+
+ '<p class="q">«Estudiar la Constitución también significa aprender a ejercer la ciudadanía»<span class="f">Conclusión del libro</span></p>');
+
+/* ============================================================
+   PORTADA  y  CUBIERTA
+   ============================================================ */
+function cubiertaHTML(dorso){
+  var interior = dorso
+    ? '<div class="cub-c">'+
+        '<div class="cub-top"><span>Colofón</span></div>'+
+        '<div>'+emblema()+
+          '<div class="cub-title" style="margin-top:14px;">FIN DE LA OBRA</div>'+
+        '</div>'+
+        '<div class="cub-sub" style="font-style:normal;font-size:.74em;letter-spacing:.06em;line-height:1.7;">Este libro virtual reúne el texto de <i>Educación Constitucional y Ciudadanía Crítica</i>, escrito por María Camila Mira Montoya (Grado 11-6, Instituto Técnico Industrial Pascual Bravo, Medellín, 2026), como parte del estudio de los fundamentos de la Constitución Política de Colombia de 1991.</div>'+
+        '<div style="display:flex;flex-direction:column;align-items:center;gap:8px;">'+
+          '<div class="cinta"><span></span><span></span><span></span></div>'+
+          '<div class="cub-autor"><small>Ley 2381 · Constitución de 1991</small></div>'+
+        '</div>'+
+      '</div>'
+    : '<div class="cub-c">'+
+        '<div class="cub-top"><span>Libro virtual</span><span class="sm">Educación Constitucional · Ciudadanía Crítica</span></div>'+
+        '<div style="display:flex;flex-direction:column;align-items:center;gap:14px;">'+
+          emblema()+
+          '<div class="cub-title">EDUCACIÓN CONSTITUCIONAL<br><small>y</small><br>CIUDADANÍA CRÍTICA</div>'+
+          '<div class="cub-sub">Comprender, participar y transformar Colombia</div>'+
+        '</div>'+
+        '<div style="display:flex;flex-direction:column;align-items:center;gap:8px;">'+
+          '<div class="cinta"><span></span><span></span><span></span></div>'+
+          '<div class="cub-autor">María Camila Mira Montoya<small>Grado 11-6 · I.T.I. Pascual Bravo · Medellín, 2026</small></div>'+
+        '</div>'+
+      '</div>';
+  return '<div class="cubierta"><div class="borde"></div><span class="esq tl"></span><span class="esq tr"></span><span class="esq bl"></span><span class="esq br"></span>'+interior+'</div>';
+}
+
+function portadaHTML(){
+  return '<div class="cabeza"><span>Portada</span><span class="ch-g">✦</span><span>1991</span></div>'+
+    '<div class="cuerpo" style="display:flex;flex-direction:column;align-items:center;text-align:center;justify-content:center;gap:10px;">'+
+      '<div style="font-family:var(--ui);font-size:.6em;letter-spacing:.3em;text-transform:uppercase;color:var(--dorado-osc);">Libro virtual de</div>'+
+      '<div style="font-family:var(--disp);font-size:clamp(1.3rem,3.6vw,1.9rem);line-height:1.25;color:var(--cuero-2);">Educación Constitucional<br>y Ciudadanía Crítica</div>'+
+      '<div class="div" style="width:80%;">❦</div>'+
+      '<div style="font-family:var(--serif);font-style:italic;font-size:.95em;color:var(--esmeralda);">Comprender, participar y transformar Colombia</div>'+
+      '<div class="cinta" style="margin-top:6px;"><span></span><span></span><span></span></div>'+
+      '<div style="margin-top:8px;font-family:var(--ui);font-size:.66em;letter-spacing:.2em;text-transform:uppercase;color:var(--tinta-mut);line-height:2;">Por <b style="color:var(--cuero-2);">María Camila Mira Montoya</b><br>Grado 11-6</div>'+
+      '<div style="font-family:var(--ui);font-size:.6em;letter-spacing:.18em;text-transform:uppercase;color:var(--tinta-mut);">Instituto Técnico Industrial Pascual Bravo<br>Medellín, 2026</div>'+
+      '<div class="q" style="max-width:90%;margin-top:8px;">«La democracia no es una conquista que pueda darse por garantizada para siempre»<span class="f">Conclusión</span></div>'+
+    '</div>'+
+    '<div class="piepg">i</div>';
+}
+
+/* Verso decorativo (dorso de cada hoja de contenido) */
+var CITAS = [
+  ['La Constitución es la norma de normas. Toda ley debe respetarla.','Sección 1'],
+  ['La soberanía reside exclusivamente en el pueblo.','Art. 3'],
+  ['La vida es inviolable.','Art. 11'],
+  ['Ninguna persona puede ser sometida a torturas ni a tratos crueles o degradantes.','Art. 12'],
+  ['Todas las personas nacen libres e iguales ante la ley.','Art. 13'],
+  ['La educación es un derecho de la persona y un servicio público con función social.','Art. 67'],
+  ['El voto solo tiene valor democrático cuando se ejerce libre, informado y responsable.','Sección 17'],
+  ['La Constitución es un marco vivo, no un texto terminado.','Sección 36'],
+  ['La democracia se practica dentro de la escuela.','Sección 37'],
+  ['Votar no es marcar una casilla: es participar en decisiones que afectan la vida cotidiana.','Sección 17'],
+  ['La ciudadanía crítica empieza cuando la Constitución deja de ser un documento lejano.','Conclusión'],
+  ['La paz es un derecho y un deber de obligatorio cumplimiento.','Art. 22']
+];
+function versoHTML(n, cita){
+  return '<div class="verso-in">'+
+    '<div class="v-glifo">❧</div>'+
+    '<div class="v-cita">«'+cita[0]+'»</div>'+
+    '<div class="v-fuente">— '+cita[1]+'</div>'+
+    '<div class="v-n">'+n+' · Hoja de cortesía</div>'+
+    '</div>';
+}
+
+/* ============================================================
+   TOC
+   ============================================================ */
+var TOC = [
+  ['Introducción',1],['1 · Los fundamentos de la Constitución',3],['2 · La historia constitucional',5],
+  ['3 · ¿Qué cambió con 1991?',7],['4 · Los principios fundamentales',8],['5 · Los derechos fundamentales',9],
+  ['6 · La acción de tutela',11],['7 · La organización del Estado',12],['8 · La Rama Legislativa',13],
+  ['9 · La Rama Ejecutiva',14],['10 · La Rama Judicial',15],['11 · Los órganos de control',16],
+  ['12 · La participación ciudadana',18],['13 · Separación de poderes: casos',20],['14 · Reforma pensional 2024',22],
+  ['15 · Cajamarca y la democracia',23],['16 · Elecciones y representación',24],['17 · Las elecciones de 2026',25],
+  ['18 · La Constitución en la vida cotidiana',26],['19 · Resolución pacífica de conflictos',27],
+  ['20 · Un conflicto escolar',28],['21 · Un conflicto comunitario',29],['22 · Prevenir conflictos',31],
+  ['23 · Problemas actuales',32],['24 · Desigualdad',33],['25 · Corrupción',34],['26 · Crisis ambiental',35],
+  ['27 · Minorías y vulnerables',36],['28 · DDHH y construcción de paz',37],['29 · Estados de excepción',38],
+  ['30 · ¿Nueva Constitución?',39],['31 · Transformación social',41],['32 · ¿Ha funcionado?',42],
+  ['33 · La brecha norma–realidad',43],['34 · ¿Obstáculo o límite?',44],['35 · Síntesis crítica',45],
+  ['36 · ¿Qué aprendimos?',46],['37 · Propuestas educativas',47],['38 · Ciudadanía crítica',49],
+  ['39 · Pensamiento crítico digital',50],['Conclusión',51],['Referencias',53]
+];
+
+/* ============================================================
+   MOTOR DEL LIBRO
+   ============================================================ */
+var libroEl = document.getElementById('libro');
+var HOJAS = [];
+function crearHoja(front, back){
+  var h = document.createElement('div');
+  h.className = 'hoja';
+  h.innerHTML = '<div class="cara frente">'+front+'</div><div class="cara dorso">'+back+'</div>';
+  libroEl.appendChild(h);
+  HOJAS.push(h);
+}
+
+var M = 55;                 // páginas de contenido
+var T = M + 2;              // hojas totales: cubierta + portada + contenido (57)
+crearHoja(cubiertaHTML(false), versoHTML('II', ['El Estado reconoce y protege la diversidad étnica y cultural de la Nación colombiana.','Art. 7']));
+crearHoja(portadaHTML(), versoHTML('iii', ['Este libro se estudia en la escuela: la educación es un derecho y un servicio público con función social.','Art. 67']));
+for (var i = 1; i <= M; i++){
+  crearHoja(PAG[i], versoHTML(i + 1, CITAS[(i - 1) % CITAS.length]));
+}
+// contracubierta: frente = última referencia (ya creada), dorso = cubierta final
+// la última hoja ya se creó en el bucle; reemplazamos su dorso por la contracubierta:
+HOJAS[HOJAS.length - 1].querySelector('.dorso').innerHTML = cubiertaHTML(true);
+
+/* ---- Estado ---- */
+var cur = 0;          // hoja en reposo (0..T-1); T = cerrado al final
+var animando = false;
+var dur = 950;
+
+function layout(){
+  HOJAS.forEach(function(l, idx){
+    if (idx === cur) l.style.zIndex = 400;
+    else if (idx < cur) l.style.zIndex = 300 - (cur - idx);
+    else l.style.zIndex = 350 - (idx - cur);
+  });
+}
+layout();
+
+function redibujarUI(){
+  var hoja = Math.min(cur + 1, T);
+  document.getElementById('infoHoja').textContent = 'Hoja ' + hoja + ' / ' + T;
+  document.getElementById('barraProg').style.width = (Math.min(cur, T - 1) / (T - 1) * 100) + '%';
+  var fwd = cur < T - 1, back = cur > 0;
+  document.getElementById('btnSig').disabled = !fwd;
+  document.getElementById('btnAnt').disabled = !back;
+  /* capas */
+  document.getElementById('capaInicio').classList.toggle('visible', cur === 0);
+  document.getElementById('capaFin').classList.toggle('visible', cur === T - 1);
+}
+/* estado inicial correcto para cubierta */
+function estadoInicial(){
+  // todas las hojas en rotación 0, cu = 0
+  HOJAS.forEach(function(l){ l.style.transform = 'rotateY(0deg)'; });
+  layout(); redibujarUI();
+}
+
+/* sonido */
+var AC = null, sonidoOn = true, ruidoPos = 0;
+function swoosh(atras){
+  if (!sonidoOn) return;
+  try{
+    AC = AC || new (window.AudioContext || window.webkitAudioContext)();
+    if (AC.state === 'suspended') AC.resume();
+    var durS = .38, t0 = AC.currentTime;
+    var buf = AC.createBuffer(1, Math.floor(AC.sampleRate * durS), AC.sampleRate);
+    var d = buf.getChannelData(0);
+    for (var x = 0; x < d.length; x++){
+      ruidoPos = (ruidoPos * 1103515245 + 12345) & 0x7fffffff; // PRNG determinista (no para criptografía)
+      d[x] = (ruidoPos / 0x7fffffff * 2 - 1) * (1 - x / d.length);
+    }
+    var src = AC.createBufferSource(); src.buffer = buf;
+    var bp = AC.createBiquadFilter(); bp.type = 'bandpass'; bp.Q.value = 1.1;
+    bp.frequency.setValueAtTime(atras ? 260 : 520, t0);
+    bp.frequency.exponentialRampToValueAtTime(atras ? 1300 : 2400, t0 + durS * .75);
+    var g = AC.createGain();
+    g.gain.setValueAtTime(.0001, t0);
+    g.gain.exponentialRampToValueAtTime(.1, t0 + .05);
+    g.gain.exponentialRampToValueAtTime(.0001, t0 + durS);
+    src.connect(bp); bp.connect(g); g.connect(AC.destination);
+    src.start(t0); src.stop(t0 + durS);
+  }catch(err){
+    /* audio no disponible: ignorar silenciosamente */
+  }
+}
+
+function avanzar(){
+  if (animando || cur >= T - 1) return;
+  animando = true;
+  var l = HOJAS[cur];
+  l.style.zIndex = 500;
+  l.style.transform = 'rotateY(-180deg)';
+  swoosh(false);
+  setTimeout(function(){
+    cur++;
+    HOJAS.forEach(function(h){ h.style.transform = 'rotateY(' + (HOJAS.indexOf(h) < cur ? '-180deg' : '0deg') + ')'; });
+    layout(); redibujarUI(); animando = false;
+  }, dur);
+}
+function retroceder(){
+  if (animando || cur <= 0) return;
+  animando = true;
+  var l = HOJAS[cur - 1];
+  l.style.zIndex = 500;
+  l.style.transform = 'rotateY(0deg)';
+  swoosh(true);
+  setTimeout(function(){
+    cur--;
+    HOJAS.forEach(function(h){ h.style.transform = 'rotateY(' + (HOJAS.indexOf(h) < cur ? '-180deg' : '0deg') + ')'; });
+    layout(); redibujarUI(); animando = false;
+  }, dur);
+}
+
+function saltarA(hojaDest){
+  /* hojaDest = índice de hoja destino */
+  hojaDest = Math.max(0, Math.min(T - 1, hojaDest));
+  if (hojaDest === cur) return;
+  var diff = hojaDest - cur;
+  var rapido = Math.abs(diff) > 2;
+  if (rapido){
+    HOJAS.forEach(function(l){ l.classList.add('sinTrans'); });
+    HOJAS.forEach(function(h, idx){ h.style.transform = 'rotateY(' + (idx < hojaDest ? '-180deg' : '0deg') + ')'; });
+    cur = hojaDest;
+    HOJAS.forEach(function(l){ l.getBoundingClientRect(); l.classList.remove('sinTrans'); });
+    layout(); redibujarUI();
+    if (diff > 0) swoosh(false); else swoosh(true);
+  } else if (diff > 0){
+    var n = hojaDest - cur;
+    var paso = function(){
+      avanzar();
+      if (--n > 0) setTimeout(paso, dur + 30);
+    };
+    paso();
+  } else {
+    var m = cur - hojaDest;
+    var paso2 = function(){
+      retroceder();
+      if (--m > 0) setTimeout(paso2, dur + 30);
+    };
+    paso2();
+  }
+}
+
+/* ============================================================
+   UI
+   ============================================================ */
+/* índice */
+var grid = document.getElementById('indiceGrid');
+TOC.forEach(function(ent){
+  var b = document.createElement('button');
+  var sp = document.createElement('span'); sp.className = 'ip';
+  sp.textContent = 'pág. ' + ent[1];
+  b.appendChild(sp);
+  b.appendChild(document.createTextNode(ent[0]));
+  b.addEventListener('click', function(){
+    document.getElementById('indice').classList.remove('visible');
+    saltarA(ent[1] + 1);   // página de contenido n → hoja n+1 (0 = cubierta fue abierta)
+  });
+  grid.appendChild(b);
+});
+
+document.getElementById('btnIndice').addEventListener('click', function(){
+  document.getElementById('indice').classList.add('visible');
+});
+document.getElementById('btnCerrarIndice').addEventListener('click', function(){
+  document.getElementById('indice').classList.remove('visible');
+});
+document.getElementById('indice').addEventListener('click', function(e){
+  if (e.target === this) this.classList.remove('visible');
+});
+
+document.getElementById('btnSig').addEventListener('click', avanzar);
+document.getElementById('btnAnt').addEventListener('click', retroceder);
+document.getElementById('btnAbrir').addEventListener('click', function(){ avanzar(); });
+document.getElementById('btnPortada').addEventListener('click', function(){ saltarA(0); });
+document.getElementById('btnReleer').addEventListener('click', function(){ saltarA(0); });
+
+/* teclado */
+document.addEventListener('keydown', function(e){
+  if (document.getElementById('indice').classList.contains('visible')) return;
+  if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); avanzar(); }
+  else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); retroceder(); }
+});
+
+/* sonido toggle */
+document.getElementById('btnSonido').addEventListener('click', function(){
+  sonidoOn = !sonidoOn;
+  this.textContent = sonidoOn ? '🔊' : '🔇';
+  this.style.opacity = sonidoOn ? 1 : .5;
+});
+
+/* deslizar */
+var x0 = null;
+libroEl.addEventListener('pointerdown', function(e){ x0 = e.clientX; });
+libroEl.addEventListener('pointerup', function(e){
+  if (x0 === null) return;
+  var dx = e.clientX - x0;
+  if (dx < -38) avanzar(); else if (dx > 38) retroceder();
+  x0 = null;
+});
+
+/* restaurar posición */
+var guardada = 0;
+try{
+  var s = localStorage.getItem('codex-civico-hoja');
+  if (s !== null) guardada = Number.parseInt(s, 10);
+}catch(err){
+  /* almacenamiento local no disponible: empezar desde la portada */
+}
+estadoInicial();
+if (guardada > 0 && guardada < T){
+  cur = guardada;
+  HOJAS.forEach(function(l){ l.classList.add('sinTrans'); });
+  HOJAS.forEach(function(h, idx){ h.style.transform = 'rotateY(' + (idx < cur ? '-180deg' : '0deg') + ')'; });
+  HOJAS.forEach(function(l){ l.getBoundingClientRect(); l.classList.remove('sinTrans'); });
+  layout(); redibujarUI();
+}
+setInterval(function(){
+  try{ localStorage.setItem('codex-civico-hoja', String(cur)); }catch(err){ /* sin almacenamiento: no persistir */ }
+}, 700);
+
+/* botones con esquinas decorativas */
+libroEl.querySelectorAll('.hoja').forEach(function(h){
+  var f = h.querySelector('.frente');
+  f.insertAdjacentHTML('beforeend',
+    '<span class="esq tl"></span><span class="esq tr"></span><span class="esq bl"></span><span class="esq br"></span>');
+});
+
+})();
+</script>
+</body>
+</html>
