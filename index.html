@@ -1589,24 +1589,10 @@ libroEl.addEventListener('pointerup', function(e){
   x0 = null;
 });
 
-/* restaurar posición */
-var guardada = 0;
-try{
-  var s = localStorage.getItem('codex-civico-hoja');
-  if (s !== null) guardada = Number.parseInt(s, 10);
-}catch(err){
-  /* almacenamiento local no disponible: empezar desde la portada */
-}
+/* siempre se inicia desde la cubierta (hoja 0); no se restaura
+   posición anterior guardada en el dispositivo */
+try{ localStorage.removeItem('codex-civico-hoja'); }catch(err){ /* sin almacenamiento */ }
 estadoInicial();
-if (guardada > 0 && guardada < T){
-  pool.forEach(function(lh){ lh.classList.add('sinTrans'); lh.style.transform = 'rotateY(0deg)'; });
-  step(guardada);
-  pool.forEach(function(lh){ lh.getBoundingClientRect(); lh.classList.remove('sinTrans'); });
-  redibujarUI();
-}
-setInterval(function(){
-  try{ localStorage.setItem('codex-civico-hoja', String(cur)); }catch(err){ /* sin almacenamiento: no persistir */ }
-}, 700);
 
 /* esquinas decorativas en las caras (una sola vez, al crear el pool) */
 pool.forEach(function(h){
